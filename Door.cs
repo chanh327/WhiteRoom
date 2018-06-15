@@ -3,27 +3,53 @@ using System.Collections;
 
 public class Door : MonoBehaviour
 {
-    private Transform step1;
-    private Transform step2;
+    private Transform doorTransform;
+    private Transform fStep;
+    private Transform bStep;
     private bool locked;
     private Secret secret;
+    private Animator doorAnim;
+    int openhash = Animator.StringToHash("Open");
 
-    public bool Locked{
-        get { return this.locked;}
+
+    public bool initialLocked = false;
+
+    private void Start()
+    {
+        doorAnim = GetComponentInChildren<Animator>();   
+        doorTransform = transform.transform;
+        fStep = transform.Find("FStep").transform;
+        bStep = transform.Find("BStep").transform;
+        locked = initialLocked;
+    }
+
+    public bool Locked
+    {
+        get { return this.locked; }
     }
 
     public void Open()
     {
-        
-    }
-
-    public void Close()
-    {
-        
+        doorAnim.SetTrigger(openhash);
     }
 
     public void Touched()
     {
-        
+
+    }
+
+    public Transform DoorTransform
+    {
+        get { return doorTransform;}
+    }
+
+    public Transform FStep 
+    {
+        get { return fStep; }
+    }
+
+    public Transform BStep
+    {
+        get { return bStep; }
     }
 }
