@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-delegate IEnumerator RotateAndMove(Vector3 v);
 public class PlayerController: MonoBehaviour
 {
     private GameObject player;
@@ -11,7 +10,6 @@ public class PlayerController: MonoBehaviour
     private Vector3 direction;
     private Quaternion lookRotation;
     private Vector3 destination;
-    private RotateAndMove rotateAndMove;
 
     private float movingSpeed = 1.5f;
     private float rotationSpeed = 40f;
@@ -52,7 +50,7 @@ public class PlayerController: MonoBehaviour
     {
         moving = true;
         destination = point;
-        while(Vector3.Distance(transform.position,destination) > 0.1f)
+        while(Vector3.Distance(transform.position,destination) > 0.1f && moving)
         {
             yield return new WaitForFixedUpdate();
         }
@@ -64,7 +62,7 @@ public class PlayerController: MonoBehaviour
         rotating =true;
         destination = point;
         yield return new WaitForFixedUpdate();
-        while(Quaternion.Angle(transform.rotation, lookRotation) != 0)
+        while(Quaternion.Angle(transform.rotation, lookRotation) != 0 && rotating)
         {
             yield return new WaitForFixedUpdate();
         }
@@ -84,6 +82,19 @@ public class PlayerController: MonoBehaviour
 
         StartCoroutine(CoRotateTo(goalPoint));
         yield return StartCoroutine(CoMoveTo(goalPoint));
+    }
+
+    public void Stop()
+    {
+        rotating = false;
+        moving = false;
+    }
+
+    public void Teleport(Transform t)
+    {
+        Stop();
+        transform.position = t.position;
+        transform.rotation = t.rotation;
     }
 
     public bool HasKey

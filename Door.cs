@@ -7,7 +7,6 @@ public class Door : MonoBehaviour
     private Transform fStep;
     private Transform bStep;
     private bool locked;
-    private Transform door;
     private Secret secret;
     private Animator doorAnim;
     int openhash = Animator.StringToHash("Open");
@@ -19,7 +18,6 @@ public class Door : MonoBehaviour
     {
         doorAnim = GetComponentInChildren<Animator>();   
         doorTransform = transform.transform;
-        door = transform.Find("Door");
         fStep = transform.Find("FStep").transform;
         bStep = transform.Find("BStep").transform;
         locked = initialLocked;
@@ -34,6 +32,7 @@ public class Door : MonoBehaviour
     {
         doorAnim.SetTrigger(openhash);
     }
+
     public void Touched()
     {
 
