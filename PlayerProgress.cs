@@ -5,11 +5,12 @@ public class PlayerProgress
 {
     private bool[] progresses;
 
-    public bool AutoSave(int stageNum)
+    public bool Save(int stageNum)
     {
+        Debug.Log("Save");
         return false;
     }
-    public bool AutoLoad()
+    public bool Load()
     {
         return false;
     }
