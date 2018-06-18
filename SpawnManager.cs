@@ -8,7 +8,7 @@ public class SpawnManager : MonoBehaviour
     public Transform[] spawnPoints;
     public PlayerController player;
     private Image blackScreen;
-    private const float blackoutTime = 3.0f;
+    private const float blackoutTime = 1.0f;
 
     void Start()
     {
@@ -21,6 +21,7 @@ public class SpawnManager : MonoBehaviour
     public IEnumerator SpawnPlayer()
     {
         int randomNumber = Random.Range(0, spawnPoints.Length);
+        yield return new WaitForSeconds(1f);
         StartCoroutine(LoadBlackScreen());
         player.Teleport(spawnPoints[randomNumber]);
         yield return new WaitForSeconds(blackoutTime);
