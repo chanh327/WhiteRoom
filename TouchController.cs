@@ -6,9 +6,12 @@ using UnityEngine;
 
 public class TouchController : MonoBehaviour
 {
-    private Camera mainCamera;
-    private float eyeline;
+    //private Camera mainCamera;
+    //private float eyeline;
 
+    Vector3 angle;
+
+    float angleRotateSpeed;
     Vector3 firstPoint;
     Vector3 secondPoint;
     float xAngle;
@@ -20,20 +23,21 @@ public class TouchController : MonoBehaviour
     float fieldOfViewMin;
     float fieldOfViewMax;
 
-    Quaternion rot;
-
     void Start()
     {
+        angle = Vector3.zero;
+
         xAngle = 0;
         yAngle = 0;
         this.transform.rotation = Quaternion.Euler(yAngle, xAngle, 0);
 
-        perspectiveZoomSpeed = 0.1f;
-        fieldOfViewMin = 30f;
+        angleRotateSpeed = 0.4f;
+        perspectiveZoomSpeed = 0.04f;
+        fieldOfViewMin = 25f;
         fieldOfViewMax = 50f;
     }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
 #if UNITY_EDITOR
         if (Input.GetMouseButton(0))
@@ -52,89 +56,73 @@ public class TouchController : MonoBehaviour
             Debug.Log(this.transform.rotation.eulerAngles);
         }
 #elif UNITY_ANDROID
-        if (Input.touchCount == 1)
+        if (Input.touchCount > 0)
         {
-            Rotate();
+            RotateAndPinchZoom();
         }
-        else if (Input.touchCount == 2)
-        {
-            PinchZoom();
-        }
-        this.transform.rotation = rot;
 #endif
     }
 
-    private void Touch(GameObject o)
+    private void RotateAndPinchZoom()
     {
+        Touch touchZero = Input.GetTouch(0);
 
-    }
+        if (Input.touchCount == 2)
+        {
+            Touch touchOne = Input.GetTouch(1);
 
-    private void Rotate()
-    {
-        Touch touch = Input.GetTouch(0);
+            // Find the position in the previous frame of each touch.
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+            // Find the magnitude of the vector (the distance) between the touches in each frame.
+            float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+            float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+            // Find the difference in the distances between each frame.
+            float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+            // Change the field of view based on the change in distance between the touches.
+            Camera.main.fieldOfView += deltaMagnitudeDiff * perspectiveZoomSpeed;
+
+            // Clamp the field of view to make sure it's between 0 and 180.
+            Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, fieldOfViewMin, fieldOfViewMax);
+
+            if (touchZero.phase == TouchPhase.Ended)
+            {
+                firstPoint = touchOne.position;
+                xAngleTemp = xAngle;
+                yAngleTemp = yAngle;
+            }
+            if (touchOne.phase == TouchPhase.Ended)
+            {
+                firstPoint = touchZero.position;
+                xAngleTemp = xAngle;
+                yAngleTemp = yAngle;
+            }
+        }
 
         // 화면 회전
-        if (touch.phase == TouchPhase.Began)
+        if (touchZero.phase == TouchPhase.Began)
         {
-            firstPoint = touch.position;
+            firstPoint = touchZero.position;
             xAngleTemp = xAngle;
             yAngleTemp = yAngle;
         }
-        if (touch.phase == TouchPhase.Moved)
+        if (Input.touchCount == 1 && touchZero.phase == TouchPhase.Moved)
         {
-            secondPoint = touch.position;
+            secondPoint = touchZero.position;
             xAngle = xAngleTemp + (secondPoint.x - firstPoint.x) * 180 / Screen.width;
             yAngle = yAngleTemp + (secondPoint.y - firstPoint.y) * 90 / Screen.height;
 
-            // 화면 제한
-            float angleLimit = (fieldOfViewMax - Camera.main.fieldOfView) * 0.5f;
-            yAngle = Mathf.Clamp(yAngle, -angleLimit, angleLimit);
-
-            rot = Quaternion.Euler(yAngle, -xAngle, 0f);
-
-            //this.transform.rotation = Quaternion.Euler(yAngle, -xAngle, 0f);
-        }
-    }
-
-    private void PinchZoom()
-    {
-        // Store both touches.
-        Touch touchZero = Input.GetTouch(0);
-        Touch touchOne = Input.GetTouch(1);
-
-        // Find the position in the previous frame of each touch.
-        Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-        Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
-
-        // Find the magnitude of the vector (the distance) between the touches in each frame.
-        float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-        float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
-
-        // Find the difference in the distances between each frame.
-        float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
-
-        // Change the field of view based on the change in distance between the touches.
-        Camera.main.fieldOfView += deltaMagnitudeDiff * perspectiveZoomSpeed;
-
-        // Clamp the field of view to make sure it's between 0 and 180.
-        Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, fieldOfViewMin, fieldOfViewMax);
-
-        // 화면 제한
-        Vector3 angle = this.transform.rotation.eulerAngles;
-        if (180f < angle.x)
-        {
-            angle.x -= 360f;
-        }
-        if (180 < angle.y)
-        {
-            angle.y -= 360f;
+            xAngle %= 360;
         }
 
         float angleLimit = (fieldOfViewMax - Camera.main.fieldOfView) * 0.5f;
-        angle.x = Mathf.Clamp(angle.x, -angleLimit, angleLimit);
+        yAngle = Mathf.Clamp(yAngle, -angleLimit, angleLimit);
+        angle = new Vector3(yAngle, -xAngle, 0f);
 
-        rot = Quaternion.Euler(angle);
-        //this.transform.rotation = Quaternion.Euler(angle);
+        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.Euler(angle), angleRotateSpeed);
     }
 
     public void SetEyeline()
@@ -142,3 +130,4 @@ public class TouchController : MonoBehaviour
 
     }
 }
+
