@@ -3,11 +3,11 @@
 /// Rotate Camera: https://answers.unity.com/questions/805630/
 
 using UnityEngine;
+using System.Collections;
 
 public class TouchController : MonoBehaviour
 {
-    //private Camera mainCamera;
-    //private float eyeline;
+    public PlayerController player;
 
     Vector3 angle;
 
@@ -23,6 +23,16 @@ public class TouchController : MonoBehaviour
     float fieldOfViewMin;
     float fieldOfViewMax;
 
+    bool touchCheck;
+    bool rotateCheck;
+    Vector3 touchPoint0;
+    Vector3 touchPoint1;
+
+    void Awake()
+    {
+        player = transform.parent.GetComponent<PlayerController>();
+    }
+
     void Start()
     {
         angle = Vector3.zero;
@@ -35,6 +45,9 @@ public class TouchController : MonoBehaviour
         perspectiveZoomSpeed = 0.04f;
         fieldOfViewMin = 25f;
         fieldOfViewMax = 50f;
+
+        touchCheck = false;
+        rotateCheck = false;
     }
 
     void LateUpdate()
@@ -47,17 +60,21 @@ public class TouchController : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                Debug.Log(hit.point);
+                if (hit.transform.CompareTag("Door"))
+                {
+                    player.MoveToDoor(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
+                }
+
+                // 버튼 태그 추가
             }
 
             transform.Rotate(new Vector3(Input.GetAxis("Mouse Y") * 2, -Input.GetAxis("Mouse X") * 3, 0));
             Camera.main.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
-
-            Debug.Log(this.transform.rotation.eulerAngles);
         }
 #elif UNITY_ANDROID
         if (Input.touchCount > 0)
         {
+            RaycastTouch();
             RotateAndPinchZoom();
         }
 #endif
@@ -125,9 +142,55 @@ public class TouchController : MonoBehaviour
         this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.Euler(angle), angleRotateSpeed);
     }
 
-    public void SetEyeline()
+    private void RaycastTouch()
     {
+        if (Input.touchCount == 1)
+        {
+            Touch touch = Input.GetTouch(0);
 
+            if (touch.phase == TouchPhase.Began)
+            {
+                touchCheck = true;
+                rotateCheck = false;
+                touchPoint0 = touch.position;
+            }
+            if (touch.phase == TouchPhase.Moved)
+            {
+                touchPoint1 = touch.position;
+                if (Vector2.Distance(touchPoint0, touchPoint1) > Screen.height * 0.03f)
+                {
+                    rotateCheck = true;
+                }
+            }
+            if (touch.phase == TouchPhase.Ended)
+            {
+                if (!rotateCheck && touchCheck)
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        if (hit.transform.CompareTag("Door"))
+                        {
+                            player.MoveToDoor(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
+                        }
+
+                        // 버튼 태그 추가
+                    }
+                    touchCheck = false;
+                }
+            }
+        }
+    }
+
+    private void OnEnable()
+    {
+        firstPoint = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+        secondPoint = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+
+        Vector3 angleTemp = this.transform.rotation.eulerAngles;
+
+        xAngle = -angleTemp.y;
+        yAngle = angleTemp.x;
     }
 }
-

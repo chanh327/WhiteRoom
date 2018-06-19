@@ -1,109 +1,98 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerController: MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    private GameObject player;
-    private bool hasKey;
-    private bool moving;
-    private bool rotating;
-    private Vector3 direction;
-    private Quaternion lookRotation;
-    private Vector3 destination;
+    private float speed = 0.5f;
+    private TouchController touchController;
 
-    private float movingSpeed = 1.5f;
-    private float rotationSpeed = 40f;
-    public Door tempDoor;
-
-
-    public PlayerController()
+    void Start()
     {
-        hasKey = false;
-        moving = false;
-        rotating = false;
+        touchController = GetComponentInChildren<TouchController>();
     }
 
-	void Start()
-	{
-        player = gameObject;
-        destination = gameObject.transform.position;
-        StartCoroutine(CoMoveToDoor(tempDoor));
-	}
-
-    void FixedUpdate()
-	{
-        if(moving)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * movingSpeed);
-        }
-
-        if(rotating)
-        {
-            direction = (destination - transform.position).normalized;
-            lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-        }
-		
-	}
-
-    IEnumerator CoMoveTo(Vector3 point)
+    public void MoveToDoor(Door door)
     {
-        moving = true;
-        destination = point;
-        while(Vector3.Distance(transform.position,destination) > 0.1f && moving)
-        {
-            yield return new WaitForFixedUpdate();
-        }
-        Debug.Log(transform.position);
-        moving = false;
+        StartCoroutine(CoMoveToDoorTest(door));
     }
-    IEnumerator CoRotateTo(Vector3 point)
+
+    public IEnumerator CoMoveToDoorTest(Door door)
     {
-        rotating =true;
-        destination = point;
-        yield return new WaitForFixedUpdate();
-        while(Quaternion.Angle(transform.rotation, lookRotation) != 0 && rotating)
+        touchController.enabled = false;
+
+        Vector3 startPoint = transform.position;
+        Vector3 goalPoint;
+        Vector3 midPoint;
+
+        Vector3 startAngle = NormalizedAngle(touchController.transform.rotation.eulerAngles);
+        Vector3 goalAngle;
+
+        if (Vector3.Distance(transform.position, door.FStep.position) > Vector3.Distance(transform.position, door.BStep.position))
         {
-            yield return new WaitForFixedUpdate();
+            goalPoint = door.FStep.position;
+            goalAngle = NormalizedAngle(door.FStep.rotation.eulerAngles);
+            midPoint = door.BStep.position;
         }
-        rotating = false;
-    }
-    public IEnumerator CoMoveToDoor(Door door) 
-    {
-        Vector3 height = new Vector3(0,transform.position.y,0);
-        Vector3 intermediatePoint = door.DoorTransform.position + height;
-        Vector3 goalPoint =((Vector3.Distance(transform.position, door.FStep.position) > Vector3.Distance(transform.position, door.BStep.position)) ? door.FStep.position : door.BStep.position);
+        else
+        {
+            goalPoint = door.BStep.position;
+            goalAngle = NormalizedAngle(door.BStep.rotation.eulerAngles);
+            midPoint = door.FStep.position;
+        }
+
+        if (startAngle.y < 0 && goalAngle.y > 0)
+            goalAngle.y -= 360;
+        else if (startAngle.y > 0 && goalAngle.y < 0)
+            goalAngle.y += 360;
+        startAngle.z = 0f;
+
+        float prevFieldOfView = Camera.main.fieldOfView;
+        float startTime = 0f;
 
         door.Open();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
-        StartCoroutine(CoRotateTo(intermediatePoint));
-        yield return StartCoroutine(CoMoveTo(intermediatePoint));
+        Debug.Log(startAngle + " " + goalAngle);
 
-        StartCoroutine(CoRotateTo(goalPoint));
-        yield return StartCoroutine(CoMoveTo(goalPoint));
-    }
-
-    public void Stop()
-    {
-        rotating = false;
-        moving = false;
-    }
-
-    public void Teleport(Transform t)
-    {
-        Stop();
-        transform.position = t.position;
-        transform.rotation = t.rotation;
-    }
-
-    public bool HasKey
-    {
-        get { return hasKey; }
-        set
+        while (startTime < 1f)
         {
-            if (hasKey != value)
-                hasKey = value;
+            startTime += (Time.deltaTime * speed);
+
+            // 이동
+            transform.position = BezierCurve(startTime, startPoint, midPoint, goalPoint);
+            // 카메라 방향
+            touchController.transform.rotation = Quaternion.Euler(BezierCurve(startTime, startAngle, goalAngle));
+            // 카메라 범위
+            Camera.main.fieldOfView = Mathf.Lerp(prevFieldOfView, 50f, startTime);
+
+            yield return new WaitForFixedUpdate();
         }
+        touchController.enabled = true;
+    }
+
+    Vector3 BezierCurve(float t, Vector3 p0, Vector3 p1)
+    {
+        return ((1 - t) * p0) + ((t) * p1);
+    }
+
+    Vector3 BezierCurve(float t, Vector3 p0, Vector3 p1, Vector3 p2)
+    {
+        Vector3 pa = BezierCurve(t, p0, p1);
+        Vector3 pb = BezierCurve(t, p1, p2);
+        return BezierCurve(t, pa, pb);
+    }
+
+    Vector3 NormalizedAngle(Vector3 angle)
+    {
+        if (angle.x < -180)
+            angle.x += 360;
+        else if (angle.x > 180)
+            angle.x -= 360;
+        if (angle.y < -180)
+            angle.y += 360;
+        else if (angle.y > 180)
+            angle.y -= 360;
+
+        return angle;
     }
 }
