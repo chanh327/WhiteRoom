@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Secret
+public class Secret : MonoBehaviour
 {
     public Sprite[] buttonKeys;
     private int[] answers;

@@ -64,7 +64,11 @@ public class TouchController : MonoBehaviour
                 {
                     player.MoveToDoor(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
                 }
-
+                else if(hit.transform.CompareTag("Item"))
+                {
+                    Debug.Log("Item Touched");
+                    hit.transform.GetComponent<Button>().Touched();
+                }
                 // 버튼 태그 추가
             }
 
