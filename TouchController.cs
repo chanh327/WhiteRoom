@@ -7,7 +7,7 @@ using System.Collections;
 
 public class TouchController : MonoBehaviour
 {
-    public PlayerController player;
+    private PlayerController player;
 
     Vector3 angle;
 
@@ -63,6 +63,8 @@ public class TouchController : MonoBehaviour
                 if (hit.transform.CompareTag("Door"))
                 {
                     player.MoveToDoor(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
+
+                    hit.transform.parent.gameObject.transform.parent.GetComponent<SecretController>().OpenSecret();
                 }
 
                 // 버튼 태그 추가
@@ -173,6 +175,7 @@ public class TouchController : MonoBehaviour
                         if (hit.transform.CompareTag("Door"))
                         {
                             player.MoveToDoor(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
+                            hit.transform.parent.gameObject.transform.parent.GetComponent<SecretController>().OpenSecret();
                         }
 
                         // 버튼 태그 추가
