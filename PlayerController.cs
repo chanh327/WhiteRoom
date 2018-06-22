@@ -13,7 +13,9 @@ public class PlayerController : MonoBehaviour
 
     public void MoveToDoor(Door door)
     {
-        StartCoroutine(CoMoveToDoorTest(door));
+        if(door.state == DoorState.Open)
+            StartCoroutine(CoMoveToDoorTest(door));
+        //else if secret || locked
     }
 
     public IEnumerator CoMoveToDoorTest(Door door)
