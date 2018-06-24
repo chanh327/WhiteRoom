@@ -23,14 +23,14 @@ public class SecretController : MonoBehaviour
             secret = GameObject.Find("Secret 5").GetComponent<Secret>();
     }
 
-    public void OpenSecret()
+    public void OpenSecret(Door door)
     {
         secret.gameObject.SetActive(true);
         if (answer.Length == 3)
-            secret.UpdateSecret(answer, list0, list1, list2);
+            secret.UpdateSecret(answer, list0, list1, list2, door);
         else if (answer.Length == 4)
-            secret.UpdateSecret(answer, list0, list1, list2, list3);
+            secret.UpdateSecret(answer, list0, list1, list2, list3, door);
         else if (answer.Length == 5)
-            secret.UpdateSecret(answer, list0, list1, list2, list3, list4);
+            secret.UpdateSecret(answer, list0, list1, list2, list3, list4, door);
     }
 }

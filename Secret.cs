@@ -23,11 +23,15 @@ public class Secret : MonoBehaviour
     private Image[] nextPanelImages;
     private Text[] nextPanelTexts;
 
-    private Image enter;
+    private Button enter;
+
+    TouchController touchController;
+    Door door;
 
     void Start()
     {
         Init();
+        touchController = Camera.main.GetComponent<TouchController>();
         this.gameObject.SetActive(false);
     }
 
@@ -39,21 +43,21 @@ public class Secret : MonoBehaviour
             panels[0] = GameObject.Find("Prev Panel 3");
             panels[1] = GameObject.Find("Answer Panel 3");
             panels[2] = GameObject.Find("Next Panel 3");
-            enter = GameObject.Find("Enter 3").GetComponent<Image>();
+            enter = GameObject.Find("Enter 3").GetComponent<Button>();
         }
         else if (this.transform.name == "Secret 4")
         {
             panels[0] = GameObject.Find("Prev Panel 4");
             panels[1] = GameObject.Find("Answer Panel 4");
             panels[2] = GameObject.Find("Next Panel 4");
-            enter = GameObject.Find("Enter 4").GetComponent<Image>();
+            enter = GameObject.Find("Enter 4").GetComponent<Button>();
         }
         else if (this.transform.name == "Secret 5")
         {
             panels[0] = GameObject.Find("Prev Panel 5");
             panels[1] = GameObject.Find("Answer Panel 5");
             panels[2] = GameObject.Find("Next Panel 5");
-            enter = GameObject.Find("Enter 5").GetComponent<Image>();
+            enter = GameObject.Find("Enter 5").GetComponent<Button>();
         }
         else
         {
@@ -76,26 +80,28 @@ public class Secret : MonoBehaviour
         }
     }
 
-    public void UpdateSecret(int[] answer, string[] list0, string[] list1, string[] list2)
+    public void UpdateSecret(int[] answer, string[] list0, string[] list1, string[] list2, Door door)
     {
         this.answer = answer;
         this.list0 = list0;
         this.list1 = list1;
         this.list2 = list2;
+        this.door = door;
         SetSecret();
     }
 
-    public void UpdateSecret(int[] answer, string[] list0, string[] list1, string[] list2, string[] list3)
+    public void UpdateSecret(int[] answer, string[] list0, string[] list1, string[] list2, string[] list3, Door door)
     {
         this.answer = answer;
         this.list0 = list0;
         this.list1 = list1;
         this.list2 = list2;
         this.list3 = list3;
+        this.door = door;
         SetSecret();
     }
 
-    public void UpdateSecret(int[] answer, string[] list0, string[] list1, string[] list2, string[] list3, string[] list4)
+    public void UpdateSecret(int[] answer, string[] list0, string[] list1, string[] list2, string[] list3, string[] list4, Door door)
     {
         this.answer = answer;
         this.list0 = list0;
@@ -103,6 +109,7 @@ public class Secret : MonoBehaviour
         this.list2 = list2;
         this.list3 = list3;
         this.list4 = list4;
+        this.door = door;
         SetSecret();
     }
 
@@ -178,19 +185,20 @@ public class Secret : MonoBehaviour
 
     private IEnumerator CoMarkButton(bool result)
     {
+
         if (result)
         {
-            //door.DoorState = DoorState.Open;
-            enter.color = new Color32(255, 255, 153, 255);
+            door.state = DoorState.Open;
+            //enter = new Color32(255, 255, 153, 255);
             yield return new WaitForSeconds(0.3f);
-            this.gameObject.SetActive(false);
+            CloseSecret();
         }
-        else
+        /*else
         {
-            enter.color = new Color32(255, 0, 0, 255);
+            //enter.color = new Color32(255, 0, 0, 255);
             yield return new WaitForSeconds(0.3f);
-            enter.color = new Color32(255, 255, 255, 255);
-        }
+            //enter.color = new Color32(255, 255, 255, 255);
+        }*/
     }
 
     private bool MarkAnswer()
@@ -211,5 +219,11 @@ public class Secret : MonoBehaviour
         }
 
         return result;
+    }
+
+    public void CloseSecret()
+    {
+        touchController.enabled = true;
+        this.gameObject.SetActive(false);
     }
 }

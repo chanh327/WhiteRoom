@@ -62,16 +62,13 @@ public class TouchController : MonoBehaviour
             {
                 if (hit.transform.CompareTag("Door"))
                 {
-                    player.MoveToDoor(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
-
-                    hit.transform.parent.gameObject.transform.parent.GetComponent<SecretController>().OpenSecret();
+                    player.Touched(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
                 }
-                else if(hit.transform.CompareTag("Item"))
+                else if (hit.transform.CompareTag("Item"))
                 {
                     Debug.Log("Item Touched");
                     hit.transform.GetComponent<Button>().Touched();
                 }
-                // 버튼 태그 추가
             }
 
             transform.Rotate(new Vector3(Input.GetAxis("Mouse Y") * 2, -Input.GetAxis("Mouse X") * 3, 0));
@@ -178,11 +175,8 @@ public class TouchController : MonoBehaviour
                     {
                         if (hit.transform.CompareTag("Door"))
                         {
-                            player.MoveToDoor(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
-                            hit.transform.parent.gameObject.transform.parent.GetComponent<SecretController>().OpenSecret();
+                            player.Touched(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
                         }
-
-                        // 버튼 태그 추가
                     }
                     touchCheck = false;
                 }

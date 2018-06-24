@@ -11,14 +11,12 @@ public class PlayerController : MonoBehaviour
         touchController = GetComponentInChildren<TouchController>();
     }
 
-    public void MoveToDoor(Door door)
+    private void MoveToDoor(Door door)
     {
-        if(door.state == DoorState.Open)
-            StartCoroutine(CoMoveToDoorTest(door));
-        //else if secret || locked
+        StartCoroutine(CoMoveToDoor(door));
     }
 
-    public IEnumerator CoMoveToDoorTest(Door door)
+    private IEnumerator CoMoveToDoor(Door door)
     {
         touchController.enabled = false;
 
@@ -96,5 +94,22 @@ public class PlayerController : MonoBehaviour
             angle.y -= 360;
 
         return angle;
+    }
+
+    public void Touched(Door door)
+    {
+        if (door.state == DoorState.Open)
+        {
+            MoveToDoor(door);
+        }
+        else if (door.state == DoorState.Locked)
+        {
+            door.LockedCall();
+        }
+        else if (door.state == DoorState.Secret)
+        {
+            touchController.enabled = false;
+            door.SecretCall(door);
+        }
     }
 }

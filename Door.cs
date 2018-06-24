@@ -1,32 +1,43 @@
 using UnityEngine;
 using System.Collections;
 
-public enum DoorState {
+public enum DoorState
+{
     Open, Secret, Locked
 }
 public class Door : MonoBehaviour
 {
+    private Locked locked;
+    private SecretController secretController;
+
     private Transform doorTransform;
     private Transform fStep;
     private Transform bStep;
     public DoorState state;
-    private Secret secret;
     private Animator doorAnim;
     int openhash = Animator.StringToHash("Open");
 
     private void Start()
     {
-        doorAnim = GetComponentInChildren<Animator>();   
+        doorAnim = GetComponentInChildren<Animator>();
         doorTransform = transform.transform;
         fStep = transform.Find("FStep").transform;
         bStep = transform.Find("BStep").transform;
 
-        if(HasComponent<Locked>())
+        if (HasComponent<Locked>())
+        {
             state = DoorState.Locked;
-        else if(HasComponent<Secret>())
+            locked = GetComponent<Locked>();
+        }
+        else if (HasComponent<SecretController>())
+        {
             state = DoorState.Secret;
+            secretController = GetComponent<SecretController>();
+        }
         else
+        {
             state = DoorState.Open;
+        }
 
     }
     public void Open()
@@ -34,17 +45,12 @@ public class Door : MonoBehaviour
         doorAnim.SetTrigger(openhash);
     }
 
-    public void Touched()
-    {
-
-    }
-
     public Transform DoorTransform
     {
-        get { return doorTransform;}
+        get { return doorTransform; }
     }
 
-    public Transform FStep 
+    public Transform FStep
     {
         get { return fStep; }
     }
@@ -53,17 +59,27 @@ public class Door : MonoBehaviour
     {
         get { return bStep; }
     }
-    public bool HasComponent<T> ()
+    public bool HasComponent<T>()
     {
-      Component[] cs = (Component[])GetComponents(typeof(Component));
+        Component[] cs = (Component[])GetComponents(typeof(Component));
         foreach (Component c in cs)
         {
             if (c.GetType().Equals(typeof(T)))
             {
                 return true;
             }
- 
+
         }
         return false;
+    }
+
+    public void LockedCall()
+    {
+        // locked 상태 확인
+    }
+
+    public void SecretCall(Door door)
+    {
+        secretController.OpenSecret(door);
     }
 }
