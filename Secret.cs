@@ -123,15 +123,35 @@ public class Secret : MonoBehaviour
         if (next > list0.Length - 1)
             next = 0;
 
-        for (int i = 0; i < answer.Length; i++)
+        if (panelNum == 0)
         {
-            if (i == panelNum)
-            {
-                prevPanelTexts[panelNum].text = list0[prev];
-                answerPanelTexts[panelNum].text = list0[cur];
-                nextPanelTexts[panelNum].text = list0[next];
-                break;
-            }
+            prevPanelTexts[panelNum].text = list0[prev];
+            answerPanelTexts[panelNum].text = list0[cur];
+            nextPanelTexts[panelNum].text = list0[next];
+        }
+        else if (panelNum == 1)
+        {
+            prevPanelTexts[panelNum].text = list1[prev];
+            answerPanelTexts[panelNum].text = list1[cur];
+            nextPanelTexts[panelNum].text = list1[next];
+        }
+        else if (panelNum == 2)
+        {
+            prevPanelTexts[panelNum].text = list2[prev];
+            answerPanelTexts[panelNum].text = list2[cur];
+            nextPanelTexts[panelNum].text = list2[next];
+        }
+        else if (panelNum == 3)
+        {
+            prevPanelTexts[panelNum].text = list3[prev];
+            answerPanelTexts[panelNum].text = list3[cur];
+            nextPanelTexts[panelNum].text = list3[next];
+        }
+        else if (panelNum == 4)
+        {
+            prevPanelTexts[panelNum].text = list4[prev];
+            answerPanelTexts[panelNum].text = list4[cur];
+            nextPanelTexts[panelNum].text = list4[next];
         }
 
         SetPanelImages(panelNum);
@@ -185,7 +205,6 @@ public class Secret : MonoBehaviour
 
     private IEnumerator CoMarkButton(bool result)
     {
-
         if (result)
         {
             door.state = DoorState.Open;
