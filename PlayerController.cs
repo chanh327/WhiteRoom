@@ -6,6 +6,13 @@ public class PlayerController : MonoBehaviour
     private float speed = 0.5f;
     private TouchController touchController;
 
+    private GameObject setting;
+
+    void Awake()
+    {
+        setting = GameObject.Find("Setting");
+    }
+
     void Start()
     {
         touchController = GetComponentInChildren<TouchController>();
@@ -52,8 +59,6 @@ public class PlayerController : MonoBehaviour
         door.Open();
         yield return new WaitForSeconds(0.5f);
 
-        Debug.Log(startAngle + " " + goalAngle);
-
         while (startTime < 1f)
         {
             startTime += (Time.deltaTime * speed);
@@ -67,7 +72,9 @@ public class PlayerController : MonoBehaviour
 
             yield return new WaitForFixedUpdate();
         }
-        touchController.enabled = true;
+
+        if (setting.activeSelf == false)
+            touchController.enabled = true;
     }
 
     Vector3 BezierCurve(float t, Vector3 p0, Vector3 p1)
