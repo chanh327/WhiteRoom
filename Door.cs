@@ -15,7 +15,10 @@ public class Door : MonoBehaviour
     private Transform bStep;
     public DoorState state;
     private Animator doorAnim;
-    int openhash = Animator.StringToHash("Open");
+    int fOpenHash = Animator.StringToHash("FOpen");
+    int bOpenHash = Animator.StringToHash("BOpen");
+    int passedHash = Animator.StringToHash("Passed");
+
 
     private void Start()
     {
@@ -40,9 +43,19 @@ public class Door : MonoBehaviour
         }
 
     }
-    public void Open()
+    public void FOpen()
     {
-        doorAnim.SetTrigger(openhash);
+        doorAnim.SetTrigger(fOpenHash);
+    }
+
+    public void BOpen()
+    {
+        doorAnim.SetTrigger(bOpenHash);
+    }
+
+    public void Close()
+    {
+        doorAnim.SetTrigger(passedHash);
     }
 
     public Transform DoorTransform

@@ -39,12 +39,14 @@ public class PlayerController : MonoBehaviour
             goalPoint = door.FStep.position;
             goalAngle = NormalizedAngle(door.FStep.rotation.eulerAngles);
             midPoint = door.BStep.position;
+            door.BOpen();
         }
         else
         {
             goalPoint = door.BStep.position;
             goalAngle = NormalizedAngle(door.BStep.rotation.eulerAngles);
             midPoint = door.FStep.position;
+            door.FOpen();
         }
 
         if (startAngle.y < 0 && goalAngle.y > 0)
@@ -56,7 +58,6 @@ public class PlayerController : MonoBehaviour
         float prevFieldOfView = Camera.main.fieldOfView;
         float startTime = 0f;
 
-        door.Open();
         yield return new WaitForSeconds(0.5f);
 
         while (startTime < 1f)
@@ -72,6 +73,7 @@ public class PlayerController : MonoBehaviour
 
             yield return new WaitForFixedUpdate();
         }
+        door.Close();
 
         if (setting.activeSelf == false)
             touchController.enabled = true;
