@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Button : Item {
 	private Animator buttonAnim;
-	int idleHash = Animator.StringToHash("Base Layer.IdleButton");
-	int onHash = Animator.StringToHash("Base Layer.TurnOnButton");
+	int offHash = Animator.StringToHash("Base Layer.OffButton");
+	int onHash = Animator.StringToHash("Base Layer.OnButton");
 
 	void Awake()
 	{
@@ -25,7 +25,7 @@ public class Button : Item {
 		set 
 		{
 			AnimatorStateInfo currentState = buttonAnim.GetCurrentAnimatorStateInfo(0);
-			if(value == true && currentState.fullPathHash == idleHash)
+			if(value == true && currentState.fullPathHash == offHash)
 			{
 				buttonAnim.SetBool("ison", value);
 				condition = value;
@@ -35,7 +35,7 @@ public class Button : Item {
 				buttonAnim.SetBool("ison", value);
 				condition = value;
 			}
-			Debug.Log(condition);
+			//Debug.Log(condition);
 		}
 	} 
 
@@ -44,7 +44,7 @@ public class Button : Item {
 		Ison = !condition;
 		for(int i=0; i<lockeds.Count; i++)
 		{
-			Debug.Log(condition);
+			//Debug.Log(condition);
 			lockeds[i].ButtonChanged();
 		}
 	}

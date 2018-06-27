@@ -66,7 +66,7 @@ public class TouchController : MonoBehaviour
                 }
                 else if (hit.transform.CompareTag("Item"))
                 {
-                    Debug.Log("Item Touched");
+                    //Debug.Log("Item Touched");
                     hit.transform.GetComponent<Button>().Touched();
                 }
             }
