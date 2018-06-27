@@ -1,12 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
-    private static PlayerProgress playerProgress = null;
-    private int stageNum;
+    public PlayerProgress playerProgress;
+    public int curStageNum;
+    private static string ProgressFilePath
+    {
+        get
+        {
+            return Path.Combine(Application.dataPath, "Resources/playerProgress.json");
+        }
+    }
     void Awake()
     {
         if (instance == null)
@@ -14,20 +23,55 @@ public class GameManager : MonoBehaviour
         else if (instance != this)
             Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
-        playerProgress = new PlayerProgress();
+        curStageNum = SceneManager.GetActiveScene().buildIndex;;
     }
-    public void ExitStage()
+    void Start()
     {
-        playerProgress.Save(stageNum);
-        Debug.Log("ExitStage");
+        LoadProgress();
+        Debug.Log(playerProgress.stages.Length);
     }
-    public void ExitGame()
+    public void ClearStage()
     {
-        
+        playerProgress.SaveRecord(curStageNum, TimeManager.instance.StopRecord());
+        LevelLoader.instance.LoadLevel(0);
+        SaveProgress();
+        curStageNum = 0;
+        //Debug.Log(playerProgress.stages[0].IsCleared);
+    }
+    public void ReturnToMenu()
+    {
+        TimeManager.instance.StopRecord();
+        LevelLoader.instance.LoadLevel(0);
+        curStageNum = 0;
+    }
+    public void QuitGame()
+    {
+        SaveProgress();
+        Application.Quit();
+    }
+
+    public void LoadLevel(int sceneIndex)
+    {
+        curStageNum = sceneIndex;
+        if(curStageNum != 0)
+            TimeManager.instance.StartRecord();
+    }
+
+    public bool LoadProgress()
+    {
+        if (File.Exists(ProgressFilePath))
+        {
+            string dataAsJson = File.ReadAllText(ProgressFilePath);
+            playerProgress = JsonUtility.FromJson<PlayerProgress>(dataAsJson);
+            return true;
+        }
+        return false;
     }
 
     public void SaveProgress()
     {
-
+        Debug.Log("SaveProgress");
+        string dataAsJson = JsonUtility.ToJson(playerProgress, true);
+        File.WriteAllText(ProgressFilePath, dataAsJson);
     }
 }

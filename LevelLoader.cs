@@ -5,9 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
+    public static LevelLoader instance = null;
     public GameObject loadingScreen;
     public Scrollbar scrollbar;
 
+    void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+        DontDestroyOnLoad(gameObject);
+    }
     void Start()
     {
         loadingScreen.SetActive(false);
@@ -15,6 +24,7 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevel(int sceneIndex)
     {
+        GameManager.instance.LoadLevel(sceneIndex);
         StartCoroutine(LoadAsynchronously(sceneIndex));
     }
 
@@ -32,5 +42,6 @@ public class LevelLoader : MonoBehaviour
 
             yield return null;
         }
+        loadingScreen.SetActive(false);
     }
 }

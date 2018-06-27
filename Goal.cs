@@ -10,7 +10,7 @@ public class Goal: MonoBehaviour
         if(col.gameObject.name == "Player" && istriggered == false)
         {
             istriggered = true;
-            GameManager.instance.ExitStage();
+            GameManager.instance.ClearStage();
         }
     }
     void OnTriggerExit(Collider other)

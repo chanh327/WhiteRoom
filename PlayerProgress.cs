@@ -3,15 +3,19 @@ using System.Collections;
 
 public class PlayerProgress
 {
-    private bool[] progresses;
+    public Stage[] stages;
 
-    public bool Save(int stageNum)
+    public bool SaveRecord(int stageNum, float time)
     {
-        Debug.Log("Save");
-        return false;
-    }
-    public bool Load()
-    {
+        for(int i=0; i<stages.Length; i++)
+        {
+            if(stageNum == stages[i].StageNum)
+            {
+                stages[i].Clear(time);
+                return true;
+                break;
+            }
+        }
         return false;
     }
 }

@@ -24,8 +24,13 @@ public class Setting : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void ReturnToMenu()
+    {
+        GameManager.instance.ReturnToMenu();
+    }
+
     public void QuitGame()
     {
-        Application.Quit();
+        GameManager.instance.QuitGame();
     }
 }
