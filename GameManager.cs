@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         LoadProgress();
-        Debug.Log(playerProgress.stages.Length);
     }
     public void ClearStage()
     {

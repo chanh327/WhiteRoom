@@ -18,9 +18,15 @@ public class Door : MonoBehaviour
     int fOpenHash = Animator.StringToHash("FOpen");
     int bOpenHash = Animator.StringToHash("BOpen");
     int passedHash = Animator.StringToHash("Passed");
+    private DoorSound doorSound;
 
+  
+    void Awake()
+    {
+        doorSound = GetComponentInChildren<DoorSound>();
+    }
 
-    private void Start()
+    void Start()
     {
         doorAnim = GetComponentInChildren<Animator>();
         doorTransform = transform.transform;
@@ -88,7 +94,7 @@ public class Door : MonoBehaviour
 
     public void LockedCall()
     {
-        // locked 상태 확인
+        doorSound.PlaySound(doorSound.lockSound);
     }
 
     public void SecretCall(Door door)
