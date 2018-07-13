@@ -6,13 +6,6 @@ public class PlayerController : MonoBehaviour
     private float speed = 0.5f;
     private TouchController touchController;
 
-    private GameObject setting;
-
-    void Awake()
-    {
-        setting = GameObject.Find("Setting");
-    }
-
     void Start()
     {
         touchController = GetComponentInChildren<TouchController>();
@@ -75,8 +68,7 @@ public class PlayerController : MonoBehaviour
         }
         door.Close();
 
-        if (setting.activeSelf == false)
-            touchController.enabled = true;
+        touchController.enabled = true;
     }
 
     Vector3 BezierCurve(float t, Vector3 p0, Vector3 p1)
@@ -117,8 +109,11 @@ public class PlayerController : MonoBehaviour
         }
         else if (door.state == DoorState.Secret)
         {
-            touchController.enabled = false;
             door.SecretCall(door);
+        }
+        else if (door.state == DoorState.DirLock)
+        {
+            door.DirLockCall(door);
         }
     }
 }

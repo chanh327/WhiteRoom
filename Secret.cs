@@ -18,12 +18,12 @@ public class Secret : MonoBehaviour
     private GameObject[] panels;
     private Image[] prevPanelImages;
     private Text[] prevPanelTexts;
-    private Image[] answerPanelImages;
-    private Text[] answerPanelTexts;
+    private Image[] centerPanelImages;
+    private Text[] centerPanelTexts;
     private Image[] nextPanelImages;
     private Text[] nextPanelTexts;
 
-    private Button enter;
+    public Image enter;
 
     TouchController touchController;
     Door door;
@@ -41,23 +41,20 @@ public class Secret : MonoBehaviour
         if (this.transform.name == "Secret 3")
         {
             panels[0] = GameObject.Find("Prev Panel 3");
-            panels[1] = GameObject.Find("Answer Panel 3");
+            panels[1] = GameObject.Find("Center Panel 3");
             panels[2] = GameObject.Find("Next Panel 3");
-            enter = GameObject.Find("Enter 3").GetComponent<Button>();
         }
         else if (this.transform.name == "Secret 4")
         {
             panels[0] = GameObject.Find("Prev Panel 4");
-            panels[1] = GameObject.Find("Answer Panel 4");
+            panels[1] = GameObject.Find("Center Panel 4");
             panels[2] = GameObject.Find("Next Panel 4");
-            enter = GameObject.Find("Enter 4").GetComponent<Button>();
         }
         else if (this.transform.name == "Secret 5")
         {
             panels[0] = GameObject.Find("Prev Panel 5");
-            panels[1] = GameObject.Find("Answer Panel 5");
+            panels[1] = GameObject.Find("Center Panel 5");
             panels[2] = GameObject.Find("Next Panel 5");
-            enter = GameObject.Find("Enter 5").GetComponent<Button>();
         }
         else
         {
@@ -66,8 +63,8 @@ public class Secret : MonoBehaviour
 
         prevPanelImages = panels[0].GetComponentsInChildren<Image>();
         prevPanelTexts = panels[0].GetComponentsInChildren<Text>();
-        answerPanelImages = panels[1].GetComponentsInChildren<Image>();
-        answerPanelTexts = panels[1].GetComponentsInChildren<Text>();
+        centerPanelImages = panels[1].GetComponentsInChildren<Image>();
+        centerPanelTexts = panels[1].GetComponentsInChildren<Text>();
         nextPanelImages = panels[2].GetComponentsInChildren<Image>();
         nextPanelTexts = panels[2].GetComponentsInChildren<Text>();
     }
@@ -82,6 +79,7 @@ public class Secret : MonoBehaviour
 
     public void UpdateSecret(int[] answer, string[] list0, string[] list1, string[] list2, Door door)
     {
+        touchController.enabled = false;
         this.answer = answer;
         this.list0 = list0;
         this.list1 = list1;
@@ -92,6 +90,7 @@ public class Secret : MonoBehaviour
 
     public void UpdateSecret(int[] answer, string[] list0, string[] list1, string[] list2, string[] list3, Door door)
     {
+        touchController.enabled = false;
         this.answer = answer;
         this.list0 = list0;
         this.list1 = list1;
@@ -103,6 +102,7 @@ public class Secret : MonoBehaviour
 
     public void UpdateSecret(int[] answer, string[] list0, string[] list1, string[] list2, string[] list3, string[] list4, Door door)
     {
+        touchController.enabled = false;
         this.answer = answer;
         this.list0 = list0;
         this.list1 = list1;
@@ -126,31 +126,31 @@ public class Secret : MonoBehaviour
         if (panelNum == 0)
         {
             prevPanelTexts[panelNum].text = list0[prev];
-            answerPanelTexts[panelNum].text = list0[cur];
+            centerPanelTexts[panelNum].text = list0[cur];
             nextPanelTexts[panelNum].text = list0[next];
         }
         else if (panelNum == 1)
         {
             prevPanelTexts[panelNum].text = list1[prev];
-            answerPanelTexts[panelNum].text = list1[cur];
+            centerPanelTexts[panelNum].text = list1[cur];
             nextPanelTexts[panelNum].text = list1[next];
         }
         else if (panelNum == 2)
         {
             prevPanelTexts[panelNum].text = list2[prev];
-            answerPanelTexts[panelNum].text = list2[cur];
+            centerPanelTexts[panelNum].text = list2[cur];
             nextPanelTexts[panelNum].text = list2[next];
         }
         else if (panelNum == 3)
         {
             prevPanelTexts[panelNum].text = list3[prev];
-            answerPanelTexts[panelNum].text = list3[cur];
+            centerPanelTexts[panelNum].text = list3[cur];
             nextPanelTexts[panelNum].text = list3[next];
         }
         else if (panelNum == 4)
         {
             prevPanelTexts[panelNum].text = list4[prev];
-            answerPanelTexts[panelNum].text = list4[cur];
+            centerPanelTexts[panelNum].text = list4[cur];
             nextPanelTexts[panelNum].text = list4[next];
         }
 
@@ -165,15 +165,15 @@ public class Secret : MonoBehaviour
             {
                 if (curNumber[panelNum] % 2 == 0)
                 {
-                    prevPanelImages[panelNum + 1].color = new Color32(192, 192, 192, 255);
-                    answerPanelImages[panelNum + 1].color = new Color32(255, 255, 255, 255);
-                    nextPanelImages[panelNum + 1].color = new Color32(192, 192, 192, 255);
+                    prevPanelImages[panelNum].color = new Color32(192, 192, 192, 255);
+                    centerPanelImages[panelNum].color = new Color32(255, 255, 255, 255);
+                    nextPanelImages[panelNum].color = new Color32(192, 192, 192, 255);
                 }
                 else
                 {
-                    prevPanelImages[panelNum + 1].color = new Color32(255, 255, 255, 255);
-                    answerPanelImages[panelNum + 1].color = new Color32(192, 192, 192, 255);
-                    nextPanelImages[panelNum + 1].color = new Color32(255, 255, 255, 255);
+                    prevPanelImages[panelNum].color = new Color32(255, 255, 255, 255);
+                    centerPanelImages[panelNum].color = new Color32(192, 192, 192, 255);
+                    nextPanelImages[panelNum].color = new Color32(255, 255, 255, 255);
                 }
                 break;
             }
@@ -208,16 +208,16 @@ public class Secret : MonoBehaviour
         if (result)
         {
             door.state = DoorState.Open;
-            //enter = new Color32(255, 255, 153, 255);
-            yield return new WaitForSeconds(0.3f);
+            FadeInOutColor(enter, Color.yellow);
+            yield return new WaitForSeconds(0.4f);
             CloseSecret();
         }
-        /*else
+        else
         {
-            //enter.color = new Color32(255, 0, 0, 255);
-            yield return new WaitForSeconds(0.3f);
-            //enter.color = new Color32(255, 255, 255, 255);
-        }*/
+            FadeInOutColor(enter, Color.red);
+            yield return new WaitForSeconds(0.4f);
+            FadeInOutColor(enter, Color.white);
+        }
     }
 
     private bool MarkAnswer()
@@ -238,6 +238,27 @@ public class Secret : MonoBehaviour
         }
 
         return result;
+    }
+
+    private void FadeInOutColor(Image img, Color color)
+    {
+        StartCoroutine(CoFadeInOutColor(img, color));
+    }
+
+    private IEnumerator CoFadeInOutColor(Image img, Color color)
+    {
+        float duration = 0.1f;
+        float currentTime = 0f;
+        while (currentTime < duration)
+        {
+            float r = Mathf.Lerp(img.color.r, color.r, currentTime / duration);
+            float g = Mathf.Lerp(img.color.g, color.g, currentTime / duration);
+            float b = Mathf.Lerp(img.color.b, color.b, currentTime / duration);
+            enter.color = new Color(r, g, b, 1f);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        yield break;
     }
 
     public void CloseSecret()
