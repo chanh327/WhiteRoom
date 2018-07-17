@@ -49,6 +49,7 @@ public class DirLock : MonoBehaviour
             door.state = DoorState.Open;
             FadeInOutColor(enter, Color.yellow);
             yield return new WaitForSeconds(0.6f);
+            Reset();
             CloseDirLock();
         }
         else

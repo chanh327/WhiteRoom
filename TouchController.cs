@@ -177,6 +177,10 @@ public class TouchController : MonoBehaviour
                         {
                             player.Touched(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
                         }
+                        else if (hit.transform.CompareTag("Item"))
+                        {
+                            hit.transform.GetComponent<Button>().Touched();
+                        }
                     }
                     touchCheck = false;
                 }

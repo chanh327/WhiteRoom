@@ -209,7 +209,12 @@ public class Secret : MonoBehaviour
         {
             door.state = DoorState.Open;
             FadeInOutColor(enter, Color.yellow);
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.6f);
+
+            // 숫자 초기화
+            for (int i = 0; i < curNumber.Length; i++)
+                curNumber[i] = 0;
+
             CloseSecret();
         }
         else
@@ -263,6 +268,7 @@ public class Secret : MonoBehaviour
 
     public void CloseSecret()
     {
+        enter.color = Color.white;
         touchController.enabled = true;
         this.gameObject.SetActive(false);
     }
