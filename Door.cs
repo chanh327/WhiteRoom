@@ -3,12 +3,13 @@ using System.Collections;
 
 public enum DoorState
 {
-    Open, Secret, Locked
+    Open, Secret, Locked, DirLock
 }
 public class Door : MonoBehaviour
 {
     private Locked locked;
     private SecretController secretController;
+    private DirLockController dirLockController;
 
     private Transform doorTransform;
     private Transform fStep;
@@ -20,7 +21,7 @@ public class Door : MonoBehaviour
     int passedHash = Animator.StringToHash("Passed");
     private DoorSound doorSound;
 
-  
+
     void Awake()
     {
         doorSound = GetComponentInChildren<DoorSound>();
@@ -42,6 +43,11 @@ public class Door : MonoBehaviour
         {
             state = DoorState.Secret;
             secretController = GetComponent<SecretController>();
+        }
+        else if (HasComponent<DirLockController>())
+        {
+            state = DoorState.DirLock;
+            dirLockController = GetComponent<DirLockController>();
         }
         else
         {
@@ -100,5 +106,10 @@ public class Door : MonoBehaviour
     public void SecretCall(Door door)
     {
         secretController.OpenSecret(door);
+    }
+
+    public void DirLockCall(Door door)
+    {
+        dirLockController.OpenDirLock(door);
     }
 }
