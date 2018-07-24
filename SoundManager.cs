@@ -6,6 +6,8 @@ public class SoundManager : MonoBehaviour{
     public static SoundManager instance = null;
     public AudioMixerSnapshot mute;
     public AudioMixerSnapshot unmute;
+
+    private bool musicOn;
     
     public AudioSource source;
     public AudioClip[] musicClips;
@@ -17,31 +19,49 @@ public class SoundManager : MonoBehaviour{
         else if (instance != this)
             Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
+        musicOn = false;
     }
 
     void Start()
     {
         source.loop = true;
-        //임시 음악 재생
-        PlayMusic();
     }
 
-    void Mute()
+    public bool MusicOn
+    {
+        get {return musicOn;}
+
+        set {
+            musicOn = value;
+            if(musicOn == true)
+                PlayMusic();
+            else
+                StopMusic();
+        }
+
+    }
+
+    public void Mute()
     {
         mute.TransitionTo(0.1f);
     }
 
-    void UnMute()
+    public void UnMute()
     {
         unmute.TransitionTo(0.1f);
     }
 
-    void PlayMusic(AudioClip clip)
+    private void PlayMusic(AudioClip clip)
     {
         source.PlayOneShot(clip);
     }
 
-    void PlayMusic()
+    private void StopMusic()
+    {
+        source.Stop();
+    }
+
+    private void PlayMusic()
     {
         source.PlayOneShot(musicClips[0]);
     }
