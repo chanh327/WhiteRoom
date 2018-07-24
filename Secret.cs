@@ -187,6 +187,7 @@ public class Secret : MonoBehaviour
             curNumber[panelNum] = 0;
 
         SetPanelTexts(panelNum);
+        door.DoorSound.PlayLockButtonPushSound();
     }
 
     public void NextButton(int panelNum)
@@ -196,6 +197,7 @@ public class Secret : MonoBehaviour
             curNumber[panelNum] = list0.Length - 1;
 
         SetPanelTexts(panelNum);
+        door.DoorSound.PlayLockButtonPushSound();
     }
 
     public void MarkButton()
@@ -207,7 +209,7 @@ public class Secret : MonoBehaviour
     {
         if (result)
         {
-            door.state = DoorState.Open;
+            door.State = DoorState.Open;
             FadeInOutColor(enter, Color.yellow);
             yield return new WaitForSeconds(0.6f);
 
@@ -241,7 +243,8 @@ public class Secret : MonoBehaviour
                 result = true;
             }
         }
-
+        //실패 소리 재생
+        door.DoorSound.PlayFailSound();
         return result;
     }
 

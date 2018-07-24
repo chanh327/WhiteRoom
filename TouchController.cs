@@ -69,6 +69,10 @@ public class TouchController : MonoBehaviour
                     //Debug.Log("Item Touched");
                     hit.transform.GetComponent<Button>().Touched();
                 }
+                else if (hit.transform.CompareTag("Turntable"))
+                {
+                    hit.transform.GetComponent<Turntable>().Touched();
+                }
             }
 
             transform.Rotate(new Vector3(Input.GetAxis("Mouse Y") * 2, -Input.GetAxis("Mouse X") * 3, 0));

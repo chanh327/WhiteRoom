@@ -32,9 +32,9 @@ public class Locked : MonoBehaviour {
 	{
 		if(CheckConditions())
 		{
-			door.state = DoorState.Open;
+			door.State = DoorState.Open;
 		}
 		else
-			door.state = DoorState.Locked;
+			door.State = DoorState.Locked;
 	}
 }

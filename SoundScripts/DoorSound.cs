@@ -7,6 +7,9 @@ public class DoorSound : MonoBehaviour{
     public AudioClip openSound;
     public AudioClip closeSound;
     public AudioClip lockSound;
+    public AudioClip unlockSound;
+    public AudioClip failSound;
+    public AudioClip lockButtonPushSound;
     private AudioSource audioSource;
 
     void Awake()
@@ -14,8 +17,9 @@ public class DoorSound : MonoBehaviour{
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlaySound(AudioClip clip)
+    private void PlaySound(AudioClip clip)
     {
+        audioSource.Stop();
         if(!audioSource.isPlaying)
             audioSource.PlayOneShot(clip);
     }
@@ -30,5 +34,23 @@ public class DoorSound : MonoBehaviour{
         PlaySound(closeSound);
     }
 
+    public void PlayLockedSound()
+    {
+        PlaySound(lockSound);
+    }
 
+    public void PlayUnlockedSound()
+    {
+        PlaySound(unlockSound);
+    }
+    
+    public void PlayFailSound()
+    {
+        PlaySound(failSound);
+    }
+
+    public void PlayLockButtonPushSound()
+    {
+        PlaySound(lockButtonPushSound);
+    }
 }
