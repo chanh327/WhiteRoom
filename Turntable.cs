@@ -33,13 +33,13 @@ public class Turntable : MonoBehaviour{
             {
                 turntableAnim.SetBool("isPlaying", true);
                 isPlaying = true;
-                SoundManager.instance.PlayMusic();
+                SoundManager.instance.MusicOn = true;
             }
             else if(value == false && currentState.fullPathHash == turningHash)
             {
                 turntableAnim.SetBool("isPlaying", false);
                 isPlaying = false;
-                SoundManager.instance.StopMusic();
+                SoundManager.instance.MusicOn = false;
             }
         }
     }
