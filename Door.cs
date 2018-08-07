@@ -14,7 +14,7 @@ public class Door : MonoBehaviour
     private Transform doorTransform;
     private Transform fStep;
     private Transform bStep;
-    public DoorState state;
+    private DoorState state;
     private Animator doorAnim;
     int fOpenHash = Animator.StringToHash("FOpen");
     int bOpenHash = Animator.StringToHash("BOpen");
@@ -54,6 +54,22 @@ public class Door : MonoBehaviour
             state = DoorState.Open;
         }
 
+    }
+    
+    public DoorState State
+    {
+        get { return state;}
+        set 
+        {
+            state = value;
+            if(state == DoorState.Open)
+                doorSound.PlayUnlockedSound();
+        }
+    }
+
+    public DoorSound DoorSound
+    {
+        get { return doorSound;}
     }
     public void FOpen()
     {
@@ -100,16 +116,18 @@ public class Door : MonoBehaviour
 
     public void LockedCall()
     {
-        doorSound.PlaySound(doorSound.lockSound);
+        doorSound.PlayLockedSound();
     }
 
     public void SecretCall(Door door)
     {
+        doorSound.PlayLockedSound();
         secretController.OpenSecret(door);
     }
 
     public void DirLockCall(Door door)
     {
+        doorSound.PlayLockedSound();
         dirLockController.OpenDirLock(door);
     }
 }

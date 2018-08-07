@@ -13,7 +13,6 @@ public class PlayerProgress
             {
                 stages[i].Clear(time);
                 return true;
-                break;
             }
         }
         return false;

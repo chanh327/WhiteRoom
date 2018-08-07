@@ -30,6 +30,7 @@ public class DirLock : MonoBehaviour
     public void Push(int num)
     {
         curDir.Enqueue(num);
+        door.DoorSound.PlayLockButtonPushSound();
     }
 
     public void Reset()
@@ -46,7 +47,7 @@ public class DirLock : MonoBehaviour
     {
         if (result)
         {
-            door.state = DoorState.Open;
+            door.State = DoorState.Open;
             FadeInOutColor(enter, Color.yellow);
             yield return new WaitForSeconds(0.6f);
             Reset();
@@ -80,7 +81,7 @@ public class DirLock : MonoBehaviour
                 }
             }
         }
-
+        door.DoorSound.PlayFailSound();
         return result;
     }
 

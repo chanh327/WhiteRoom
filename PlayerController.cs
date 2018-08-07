@@ -42,9 +42,9 @@ public class PlayerController : MonoBehaviour
             door.FOpen();
         }
 
-        if (startAngle.y < 0 && goalAngle.y > 0)
+        if (goalAngle.y - startAngle.y > 180)
             goalAngle.y -= 360;
-        else if (startAngle.y > 0 && goalAngle.y < 0)
+        else if (goalAngle.y - startAngle.y < -180)
             goalAngle.y += 360;
         startAngle.z = 0f;
 
@@ -99,19 +99,19 @@ public class PlayerController : MonoBehaviour
 
     public void Touched(Door door)
     {
-        if (door.state == DoorState.Open)
+        if (door.State == DoorState.Open)
         {
             MoveToDoor(door);
         }
-        else if (door.state == DoorState.Locked)
+        else if (door.State == DoorState.Locked)
         {
             door.LockedCall();
         }
-        else if (door.state == DoorState.Secret)
+        else if (door.State == DoorState.Secret)
         {
             door.SecretCall(door);
         }
-        else if (door.state == DoorState.DirLock)
+        else if (door.State == DoorState.DirLock)
         {
             door.DirLockCall(door);
         }

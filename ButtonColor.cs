@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class ButtonColor : MonoBehaviour {
 
-	private MeshRenderer renderer;
+	private MeshRenderer meshRenderer;
 	public Color onColor;
 	public Color idleColor;
 
 	void Awake()
 	{
-		renderer = transform.Find("Box001").GetComponent<MeshRenderer>();
+		meshRenderer = transform.Find("Box001").GetComponent<MeshRenderer>();
 	}
 	void Start () {
-		renderer.material.color = idleColor;
+		meshRenderer.material.color = idleColor;
 	}
 
 	public IEnumerator CoChangeColor(Color color)
 	{
 		float starTime = 0f;
-		Color lastColor = renderer.material.color;
+		Color lastColor = meshRenderer.material.color;
 		while(starTime < 1f)
 		{
 			starTime += Time.deltaTime * 1.0f;
-			renderer.material.color = Color.Lerp(lastColor, color, starTime);
+			meshRenderer.material.color = Color.Lerp(lastColor, color, starTime);
 			 yield return new WaitForFixedUpdate();
 		}
-		renderer.material.color = color;
+		meshRenderer.material.color = color;
 	}
 
 	public void TurnOnColor()
