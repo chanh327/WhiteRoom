@@ -42,9 +42,9 @@ public class PlayerController : MonoBehaviour
             door.FOpen();
         }
 
-        if (startAngle.y < 0 && goalAngle.y > 0)
+        if (goalAngle.y - startAngle.y > 180)
             goalAngle.y -= 360;
-        else if (startAngle.y > 0 && goalAngle.y < 0)
+        else if (goalAngle.y - startAngle.y < -180)
             goalAngle.y += 360;
         startAngle.z = 0f;
 

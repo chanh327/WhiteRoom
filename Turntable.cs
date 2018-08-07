@@ -1,9 +1,10 @@
 using System.Collections;
 using UnityEngine;
+//GameObjet : TurnTable
+//Tag : TurnTable
 
 public class Turntable : MonoBehaviour{
-    //GameObjet : TurnTable
-    //Tag : Turntable
+
     private Animator turntableAnim;
     private bool isPlaying;
     int turningHash = Animator.StringToHash("Base Layer.Turning");
@@ -20,9 +21,7 @@ public class Turntable : MonoBehaviour{
         if(isPlaying)
             turntableAnim.SetBool("isPlaying", true);
     }
-
-
-
+    
     public bool IsPlaying
     {
         get { return isPlaying;}
