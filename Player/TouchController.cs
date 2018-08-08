@@ -28,6 +28,9 @@ public class TouchController : MonoBehaviour
     Vector3 touchPoint0;
     Vector3 touchPoint1;
 
+    public static int howManyTouch;
+    private Vector3 angleTemp;
+
     void Awake()
     {
         player = transform.parent.GetComponent<PlayerController>();
@@ -41,13 +44,15 @@ public class TouchController : MonoBehaviour
         yAngle = 0;
         this.transform.rotation = Quaternion.Euler(yAngle, xAngle, 0);
 
-        angleRotateSpeed = 0.4f;
+        angleRotateSpeed = 0.5f;
         perspectiveZoomSpeed = 0.04f;
-        fieldOfViewMin = 25f;
+        fieldOfViewMin = 30f;
         fieldOfViewMax = 50f;
 
         touchCheck = false;
         rotateCheck = false;
+
+        howManyTouch = 0;
     }
 
     void LateUpdate()
@@ -146,7 +151,19 @@ public class TouchController : MonoBehaviour
         yAngle = Mathf.Clamp(yAngle, -angleLimit, angleLimit);
         angle = new Vector3(yAngle, -xAngle, 0f);
 
+        angleTemp = angle;
         this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.Euler(angle), angleRotateSpeed);
+
+        // 더블 탭 줌
+        if (Input.touchCount == 1 && touchZero.phase == TouchPhase.Ended)
+        {
+            howManyTouch++;
+            StartCoroutine(IntervalBetweenTouch());
+        }
+        if (howManyTouch >= 2)
+        {
+            StartCoroutine(DoubleTabZoom());
+        }
     }
 
     private void RaycastTouch()
@@ -201,5 +218,43 @@ public class TouchController : MonoBehaviour
 
         xAngle = -angleTemp.y;
         yAngle = angleTemp.x;
+    }
+
+    private IEnumerator IntervalBetweenTouch()
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        howManyTouch = 0;
+    }
+
+    private IEnumerator DoubleTabZoom()
+    {
+        howManyTouch = 0;
+
+        float startTime = 0f;
+        float curfieldOfView = Camera.main.fieldOfView;
+
+        while (startTime < 1f)
+        //while (fieldOfViewMin <= Camera.main.fieldOfView && Camera.main.fieldOfView <= fieldOfViewMax)
+        {
+            startTime += Time.deltaTime * 3f;
+            if ((fieldOfViewMin + fieldOfViewMax) / 2 < curfieldOfView)
+                Camera.main.fieldOfView = Mathf.Lerp(curfieldOfView, fieldOfViewMin, startTime);
+            else
+                Camera.main.fieldOfView = Mathf.Lerp(curfieldOfView, fieldOfViewMax, startTime);
+
+            float angleLimit = (fieldOfViewMax - Camera.main.fieldOfView) * 0.5f;
+            yAngle = Mathf.Clamp(yAngle, -angleLimit, angleLimit);
+            angle = new Vector3(yAngle, angleTemp.y, 0f);
+
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.Euler(angle), angleRotateSpeed);
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        if (Camera.main.fieldOfView < fieldOfViewMin)
+            Camera.main.fieldOfView = fieldOfViewMin;
+        else if (Camera.main.fieldOfView > fieldOfViewMax)
+            Camera.main.fieldOfView = fieldOfViewMax;
     }
 }
