@@ -20,8 +20,8 @@ public class TouchController : MonoBehaviour
     float yAngleTemp;
 
     float perspectiveZoomSpeed; // The rate of change of the field of view in perspective mode.
-    float fieldOfViewMin;
-    float fieldOfViewMax;
+    public float fieldOfViewMin;
+    public float fieldOfViewMax;
 
     bool touchCheck;
     bool rotateCheck;
@@ -47,7 +47,7 @@ public class TouchController : MonoBehaviour
         angleRotateSpeed = 0.5f;
         perspectiveZoomSpeed = 0.04f;
         fieldOfViewMin = 30f;
-        fieldOfViewMax = 50f;
+        fieldOfViewMax = 55f;
 
         touchCheck = false;
         rotateCheck = false;
@@ -237,7 +237,7 @@ public class TouchController : MonoBehaviour
         while (startTime < 1f)
         //while (fieldOfViewMin <= Camera.main.fieldOfView && Camera.main.fieldOfView <= fieldOfViewMax)
         {
-            startTime += Time.deltaTime * 3f;
+            startTime += Time.deltaTime * 3.5f;
             if ((fieldOfViewMin + fieldOfViewMax) / 2 < curfieldOfView)
                 Camera.main.fieldOfView = Mathf.Lerp(curfieldOfView, fieldOfViewMin, startTime);
             else

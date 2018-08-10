@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
             // 카메라 방향
             touchController.transform.rotation = Quaternion.Euler(BezierCurve(startTime, startAngle, goalAngle));
             // 카메라 범위
-            Camera.main.fieldOfView = Mathf.Lerp(prevFieldOfView, 50f, startTime);
+            Camera.main.fieldOfView = Mathf.Lerp(prevFieldOfView, touchController.fieldOfViewMax, startTime);
 
             yield return new WaitForFixedUpdate();
         }
