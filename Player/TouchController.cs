@@ -155,7 +155,7 @@ public class TouchController : MonoBehaviour
         this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.Euler(angle), angleRotateSpeed);
 
         // 더블 탭 줌
-        if (Input.touchCount == 1 && touchZero.phase == TouchPhase.Ended)
+        if (Input.touchCount == 1 && touchZero.phase == TouchPhase.Began)
         {
             howManyTouch++;
             StartCoroutine(IntervalBetweenTouch());
