@@ -194,6 +194,7 @@ public class TouchController : MonoBehaviour
                     RaycastHit hit;
                     if (Physics.Raycast(ray, out hit))
                     {
+                        howManyTouch = 0;
                         if (hit.transform.CompareTag("Door"))
                         {
                             player.Touched(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
