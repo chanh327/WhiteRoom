@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
     }
     public void ClearStage()
     {
-        playerProgress.SaveRecord(curStageNum, TimeManager.instance.StopRecord());
         LevelLoader.instance.LoadLevel(0);
         SaveProgress();
         curStageNum = 0;
