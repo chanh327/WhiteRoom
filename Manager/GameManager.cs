@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
     public PlayerProgress playerProgress;
-    public int curStageNum;
     private static string ProgressFilePath
     {
         get
@@ -23,38 +22,17 @@ public class GameManager : MonoBehaviour
         else if (instance != this)
             Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
-        curStageNum = SceneManager.GetActiveScene().buildIndex;;
+        LoadProgress();
     }
     void Start()
     {
-        LoadProgress();
-    }
-    public void ClearStage()
-    {
-        LevelLoader.instance.LoadLevel(0);
-        SaveProgress();
-        curStageNum = 0;
-        //Debug.Log(playerProgress.stages[0].IsCleared);
-    }
-    public void ReturnToMenu()
-    {
-        TimeManager.instance.StopRecord();
-        LevelLoader.instance.LoadLevel(0);
-        curStageNum = 0;
+        //임시 리셋
+        playerProgress.Reset();
     }
     public void QuitGame()
     {
-        SaveProgress();
         Application.Quit();
     }
-
-    public void LoadLevel(int sceneIndex)
-    {
-        curStageNum = sceneIndex;
-        if(curStageNum != 0)
-            TimeManager.instance.StartRecord();
-    }
-
     public bool LoadProgress()
     {
         if (File.Exists(ProgressFilePath))
@@ -65,10 +43,9 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
-
-    public void SaveProgress()
+    public void SaveProgress(int sceneidx)
     {
-        Debug.Log("SaveProgress");
+        playerProgress.Clear(sceneidx - 1);
         string dataAsJson = JsonUtility.ToJson(playerProgress, true);
         File.WriteAllText(ProgressFilePath, dataAsJson);
     }

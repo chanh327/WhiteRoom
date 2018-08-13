@@ -1,20 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
-public class Goal: MonoBehaviour
+public class Goal: Teleport
 {
-    bool istriggered = false;
-
-    void OnTriggerEnter (Collider col)
+    protected override void  Event()
     {
-        if(col.gameObject.name == "Player" && istriggered == false)
-        {
-            istriggered = true;
-            GameManager.instance.ClearStage();
-        }
-    }
-    void OnTriggerExit(Collider other)
-    {
-        istriggered = true;
+        GameManager.instance.SaveProgress(SceneManager.GetActiveScene().buildIndex);
+        LevelLoader.instance.LoadLevel(stageNum);
     }
 }
