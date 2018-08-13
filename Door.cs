@@ -53,7 +53,6 @@ public class Door : MonoBehaviour
         {
             state = DoorState.Open;
         }
-
     }
     
     public DoorState State
