@@ -48,6 +48,7 @@ public class TouchController : MonoBehaviour
         perspectiveZoomSpeed = 0.04f;
         fieldOfViewMin = 30f;
         fieldOfViewMax = 55f;
+        Camera.main.fieldOfView = fieldOfViewMax;
 
         touchCheck = false;
         rotateCheck = false;
@@ -194,13 +195,14 @@ public class TouchController : MonoBehaviour
                     RaycastHit hit;
                     if (Physics.Raycast(ray, out hit))
                     {
-                        howManyTouch = 0;
                         if (hit.transform.CompareTag("Door"))
                         {
+                            howManyTouch = 0;
                             player.Touched(hit.transform.parent.gameObject.transform.parent.GetComponent<Door>());
                         }
                         else if (hit.transform.CompareTag("Item"))
                         {
+                            howManyTouch = 0;
                             hit.transform.GetComponent<Button>().Touched();
                         }
                     }
