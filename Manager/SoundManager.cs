@@ -10,7 +10,7 @@ public class SoundManager : MonoBehaviour{
     private bool musicOn;
     
     public AudioSource source;
-    public AudioClip[] musicClips;
+    public AudioClip[] bgms;
 
     void Awake()
     {
@@ -25,20 +25,6 @@ public class SoundManager : MonoBehaviour{
     void Start()
     {
         source.loop = true;
-    }
-
-    public bool MusicOn
-    {
-        get {return musicOn;}
-
-        set {
-            musicOn = value;
-            if(musicOn == true)
-                PlayMusic();
-            else
-                StopMusic();
-        }
-
     }
 
     public void Mute()
@@ -56,13 +42,13 @@ public class SoundManager : MonoBehaviour{
         source.PlayOneShot(clip);
     }
 
+    public void PlayBGM(int scenidx)
+    {
+        PlayMusic(bgms[scenidx]);
+    }
+
     private void StopMusic()
     {
         source.Stop();
-    }
-
-    private void PlayMusic()
-    {
-        source.PlayOneShot(musicClips[0]);
     }
 }

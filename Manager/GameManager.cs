@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        //임시 리셋
-        playerProgress.Reset();
+        //playerProgress.Reset();
+        //SaveProgress(1);
     }
     public void QuitGame()
     {
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     }
     public void SaveProgress(int sceneidx)
     {
-        playerProgress.Clear(sceneidx - 1);
+        playerProgress.Finish(sceneidx - 1);
         string dataAsJson = JsonUtility.ToJson(playerProgress, true);
         File.WriteAllText(ProgressFilePath, dataAsJson);
     }

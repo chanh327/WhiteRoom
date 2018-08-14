@@ -42,5 +42,6 @@ public class LevelLoader : MonoBehaviour
             yield return null;
         }
         loadingScreen.SetActive(false);
+        SoundManager.instance.PlayBGM(sceneIndex);
     }
 }
