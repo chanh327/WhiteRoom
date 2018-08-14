@@ -29,6 +29,11 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(LoadAsynchronously(sceneIndex));
     }
 
+    public void LoadLevel()
+    {
+        StartCoroutine(LoadAsynchronously(SceneManager.GetActiveScene().buildIndex));
+    }
+
     IEnumerator LoadAsynchronously(int sceneIndex)
     {
         Color fade = Color.black;
