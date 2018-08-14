@@ -1,31 +1,68 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Setting : MonoBehaviour
 {
-    private TouchController touchController;
+    private GameObject menu;
+
+    private bool sound;
+    private Image soundImg;
+
+    void Awake()
+    {
+        menu = GameObject.Find("Menu");
+        soundImg = GameObject.Find("Sound").GetComponent<Image>();
+    }
 
     void Start()
     {
-        touchController = Camera.main.GetComponent<TouchController>();
-        gameObject.SetActive(false);
+        sound = true;
+        changeSoundColor(new Color(0.125f, 0.125f, 0.125f));
+        menu.SetActive(false);
     }
 
-    public void OpenSetting()
+    public void MenuOnOff()
     {
-        touchController.enabled = false;
-        gameObject.SetActive(true);
+        if (menu.activeSelf)
+        {
+            menu.SetActive(false);
+        }
+        else
+        {
+            menu.SetActive(true);
+        }
     }
 
-    public void CloseSetting()
+    public void SoundOnOff()
     {
-        touchController.enabled = true;
-        gameObject.SetActive(false);
+        if (sound)
+        {
+            changeSoundColor(new Color(0.6875f, 0.6875f, 0.6875f));
+            SoundManager.instance.Mute();
+            sound = false;
+        }
+        else
+        {
+            changeSoundColor(new Color(0.125f, 0.125f, 0.125f));
+            SoundManager.instance.UnMute();
+            sound = true;
+        }
     }
 
-    public void QuitGame()
+    public void changeSoundColor(Color c)
     {
-        GameManager.instance.QuitGame();
+        soundImg.color = c;
+    }
+
+    public void Restart()
+    {
+        menu.SetActive(false);
+        LevelLoader.instance.LoadLevel();
+    }
+
+    public void GoSelect()
+    {
+        menu.SetActive(false);
+        LevelLoader.instance.LoadLevel(0);
     }
 }
