@@ -38,13 +38,13 @@ public class Setting : MonoBehaviour
         if (sound)
         {
             changeSoundColor(new Color(0.6875f, 0.6875f, 0.6875f));
-            SoundManager.instance.Mute();
+            //SoundManager.instance.EffectMute();
             sound = false;
         }
         else
         {
             changeSoundColor(new Color(0.125f, 0.125f, 0.125f));
-            SoundManager.instance.UnMute();
+            //SoundManager.instance.EffectUnMute();
             sound = true;
         }
     }
