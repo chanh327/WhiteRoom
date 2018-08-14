@@ -29,6 +29,7 @@ public class SoundManager : MonoBehaviour
     {
         source.loop = true;
         PlayBGM(0);
+<<<<<<< HEAD
     }
 
     public void MusicMute()
@@ -48,6 +49,27 @@ public class SoundManager : MonoBehaviour
 
     public void EffectUnMute()
     {
+=======
+    }
+
+    public void MusicMute()
+    {
+        musicMute.TransitionTo(0.1f);
+    }
+
+    public void MusicUnMute()
+    {
+        musicUnMute.TransitionTo(0.1f);
+    }
+
+    public void EffectMute()
+    {
+        effectMute.TransitionTo(0.1f);
+    }
+
+    public void EffectUnMute()
+    {
+>>>>>>> 624f0fba9e5c5d6a800f2fbe2ac3abfb2c1220bf
         effectUnMute.TransitionTo(0.1f);
     }
 

@@ -59,6 +59,7 @@ public class Setting : MonoBehaviour
     {
         if (music)
         {
+<<<<<<< HEAD
             changeSoundColor(musicImg, new Color(0.6875f, 0.6875f, 0.6875f));
             SoundManager.instance.MusicMute();
             music = false;
@@ -68,6 +69,17 @@ public class Setting : MonoBehaviour
             changeSoundColor(musicImg, new Color(0.125f, 0.125f, 0.125f));
             SoundManager.instance.MusicUnMute();
             music = true;
+=======
+            changeSoundColor(new Color(0.6875f, 0.6875f, 0.6875f));
+            //SoundManager.instance.EffectMute();
+            sound = false;
+        }
+        else
+        {
+            changeSoundColor(new Color(0.125f, 0.125f, 0.125f));
+            //SoundManager.instance.EffectUnMute();
+            sound = true;
+>>>>>>> 624f0fba9e5c5d6a800f2fbe2ac3abfb2c1220bf
         }
     }
 
