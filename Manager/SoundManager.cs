@@ -25,6 +25,7 @@ public class SoundManager : MonoBehaviour{
     void Start()
     {
         source.loop = true;
+        PlayBGM(0);
     }
 
     public void Mute()
@@ -44,6 +45,7 @@ public class SoundManager : MonoBehaviour{
 
     public void PlayBGM(int scenidx)
     {
+        StopMusic();
         PlayMusic(bgms[scenidx]);
     }
 

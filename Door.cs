@@ -25,10 +25,6 @@ public class Door : MonoBehaviour
     void Awake()
     {
         doorSound = GetComponentInChildren<DoorSound>();
-    }
-
-    void Start()
-    {
         doorAnim = GetComponentInChildren<Animator>();
         doorTransform = transform.transform;
         fStep = transform.Find("FStep").transform;
