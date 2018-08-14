@@ -11,7 +11,6 @@ public class SelectLight : MonoBehaviour {
 		PlayerProgress playerProgress = GameManager.instance.playerProgress;
 
 		//Tutorial
-		Debug.Log(playerProgress.stage_clears[0]);
 		if(playerProgress.stage_clears[0] == false)
 			LevelLoader.instance.LoadLevel(1);
 
