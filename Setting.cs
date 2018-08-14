@@ -5,19 +5,25 @@ public class Setting : MonoBehaviour
 {
     private GameObject menu;
 
-    private bool sound;
-    private Image soundImg;
+    private bool effect;
+    private Image effectImg;
+
+    private bool music;
+    private Image musicImg;
 
     void Awake()
     {
         menu = GameObject.Find("Menu");
-        soundImg = GameObject.Find("Sound").GetComponent<Image>();
+        effectImg = GameObject.Find("Effect").GetComponent<Image>();
+        musicImg = GameObject.Find("Music").GetComponent<Image>();
     }
 
     void Start()
     {
-        sound = true;
-        changeSoundColor(new Color(0.125f, 0.125f, 0.125f));
+        effect = true;
+        music = true;
+        changeSoundColor(effectImg, new Color(0.125f, 0.125f, 0.125f));
+        changeSoundColor(musicImg, new Color(0.125f, 0.125f, 0.125f));
         menu.SetActive(false);
     }
 
@@ -33,25 +39,41 @@ public class Setting : MonoBehaviour
         }
     }
 
-    public void SoundOnOff()
+    public void EffectOnOff()
     {
-        if (sound)
+        if (effect)
         {
-            changeSoundColor(new Color(0.6875f, 0.6875f, 0.6875f));
-            SoundManager.instance.Mute();
-            sound = false;
+            changeSoundColor(effectImg, new Color(0.6875f, 0.6875f, 0.6875f));
+            SoundManager.instance.EffectMute();
+            effect = false;
         }
         else
         {
-            changeSoundColor(new Color(0.125f, 0.125f, 0.125f));
-            SoundManager.instance.UnMute();
-            sound = true;
+            changeSoundColor(effectImg, new Color(0.125f, 0.125f, 0.125f));
+            SoundManager.instance.EffectUnMute();
+            effect = true;
         }
     }
 
-    public void changeSoundColor(Color c)
+    public void MusicOnOff()
     {
-        soundImg.color = c;
+        if (music)
+        {
+            changeSoundColor(musicImg, new Color(0.6875f, 0.6875f, 0.6875f));
+            SoundManager.instance.MusicMute();
+            music = false;
+        }
+        else
+        {
+            changeSoundColor(musicImg, new Color(0.125f, 0.125f, 0.125f));
+            SoundManager.instance.MusicUnMute();
+            music = true;
+        }
+    }
+
+    public void changeSoundColor(Image img, Color c)
+    {
+        img.color = c;
     }
 
     public void Restart()

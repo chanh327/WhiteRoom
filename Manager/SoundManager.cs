@@ -2,13 +2,16 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class SoundManager : MonoBehaviour{
+public class SoundManager : MonoBehaviour
+{
     public static SoundManager instance = null;
-    public AudioMixerSnapshot mute;
-    public AudioMixerSnapshot unmute;
+    public AudioMixerSnapshot musicMute;
+    public AudioMixerSnapshot musicUnMute;
+    public AudioMixerSnapshot effectMute;
+    public AudioMixerSnapshot effectUnMute;
 
     private bool musicOn;
-    
+
     public AudioSource source;
     public AudioClip[] bgms;
 
@@ -25,16 +28,27 @@ public class SoundManager : MonoBehaviour{
     void Start()
     {
         source.loop = true;
+        PlayBGM(0);
     }
 
-    public void Mute()
+    public void MusicMute()
     {
-        mute.TransitionTo(0.1f);
+        musicMute.TransitionTo(0.1f);
     }
 
-    public void UnMute()
+    public void MusicUnMute()
     {
-        unmute.TransitionTo(0.1f);
+        musicUnMute.TransitionTo(0.1f);
+    }
+
+    public void EffectMute()
+    {
+        effectMute.TransitionTo(0.1f);
+    }
+
+    public void EffectUnMute()
+    {
+        effectUnMute.TransitionTo(0.1f);
     }
 
     private void PlayMusic(AudioClip clip)
@@ -44,6 +58,7 @@ public class SoundManager : MonoBehaviour{
 
     public void PlayBGM(int scenidx)
     {
+        StopMusic();
         PlayMusic(bgms[scenidx]);
     }
 

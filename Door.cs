@@ -5,6 +5,7 @@ public enum DoorState
 {
     Open, Secret, Locked, DirLock
 }
+
 public class Door : MonoBehaviour
 {
     private Locked locked;
@@ -21,14 +22,9 @@ public class Door : MonoBehaviour
     int passedHash = Animator.StringToHash("Passed");
     private DoorSound doorSound;
 
-
     void Awake()
     {
         doorSound = GetComponentInChildren<DoorSound>();
-    }
-
-    void Start()
-    {
         doorAnim = GetComponentInChildren<Animator>();
         doorTransform = transform.transform;
         fStep = transform.Find("FStep").transform;
@@ -54,21 +50,21 @@ public class Door : MonoBehaviour
             state = DoorState.Open;
         }
     }
-    
+
     public DoorState State
     {
-        get { return state;}
-        set 
+        get { return state; }
+        set
         {
             state = value;
-            if(state == DoorState.Open)
+            if (state == DoorState.Open)
                 doorSound.PlayUnlockedSound();
         }
     }
 
     public DoorSound DoorSound
     {
-        get { return doorSound;}
+        get { return doorSound; }
     }
     public void FOpen()
     {

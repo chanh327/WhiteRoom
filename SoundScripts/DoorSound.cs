@@ -2,8 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class DoorSound : MonoBehaviour{
-    
+public class DoorSound : MonoBehaviour
+{
     public AudioClip openSound;
     public AudioClip closeSound;
     public AudioClip lockSound;
@@ -20,7 +20,7 @@ public class DoorSound : MonoBehaviour{
     private void PlaySound(AudioClip clip)
     {
         audioSource.Stop();
-        if(!audioSource.isPlaying)
+        if (!audioSource.isPlaying)
             audioSource.PlayOneShot(clip);
     }
 
@@ -43,7 +43,7 @@ public class DoorSound : MonoBehaviour{
     {
         PlaySound(unlockSound);
     }
-    
+
     public void PlayFailSound()
     {
         PlaySound(failSound);

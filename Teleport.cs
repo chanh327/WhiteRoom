@@ -1,16 +1,15 @@
 using UnityEngine;
 using System.Collections;
 
-public class Teleport: MonoBehaviour
+public class Teleport : MonoBehaviour
 {
     bool istriggered = false;
     public int stageNum = 0;
-    protected virtual void Event() {}
-    
+    protected virtual void Event() { }
 
-    void OnTriggerEnter (Collider col)
+    void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.name == "Player" && istriggered == false)
+        if (col.gameObject.name == "Player" && istriggered == false)
         {
             istriggered = true;
             Event();

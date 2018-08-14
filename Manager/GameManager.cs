@@ -12,7 +12,11 @@ public class GameManager : MonoBehaviour
     {
         get
         {
+#if UNITY_EDITOR
             return Path.Combine(Application.dataPath, "Resources/playerProgress.json");
+#elif UNITY_ANDROID
+            return Path.Combine(Application.persistentDataPath, "playerProgress.json");
+#endif
         }
     }
     void Awake()
@@ -24,25 +28,26 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         LoadProgress();
     }
+
     void Start()
     {
         //playerProgress.Reset();
         //SaveProgress(1);
     }
+
     public void QuitGame()
     {
         Application.Quit();
     }
+
     public bool LoadProgress()
     {
-        if (File.Exists(ProgressFilePath))
-        {
-            string dataAsJson = File.ReadAllText(ProgressFilePath);
-            playerProgress = JsonUtility.FromJson<PlayerProgress>(dataAsJson);
-            return true;
-        }
-        return false;
+        TextAsset tempJson = Resources.Load("playerProgress") as TextAsset;
+        string dataAsJson = tempJson.ToString();
+        playerProgress = JsonUtility.FromJson<PlayerProgress>(dataAsJson);
+        return true;
     }
+
     public void SaveProgress(int sceneidx)
     {
         playerProgress.Finish(sceneidx - 1);
