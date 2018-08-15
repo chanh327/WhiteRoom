@@ -10,6 +10,7 @@ public class SelectLight : MonoBehaviour
     void Start()
     {
         PlayerProgress playerProgress = GameManager.instance.playerProgress;
+        endingDoor.State = DoorState.Locked;
 
         //Tutorial
         if (playerProgress.stage_clears[0] == false)
