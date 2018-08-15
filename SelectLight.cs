@@ -10,16 +10,10 @@ public class SelectLight : MonoBehaviour
     void Start()
     {
         PlayerProgress playerProgress = GameManager.instance.playerProgress;
-
-<<<<<<< HEAD
+        
         //Tutorial
         if (playerProgress.stage_clears[0] == false)
             LevelLoader.instance.TutorialLoad();
-=======
-		//Tutorial
-		if(playerProgress.stage_clears[0] == false)
-			LevelLoader.instance.LoadLevel(1);
->>>>>>> 624f0fba9e5c5d6a800f2fbe2ac3abfb2c1220bf
 
         for (int i = 0; i < PointLights.Length - 1; i++)
             PointLights[i].SetActive(true);
