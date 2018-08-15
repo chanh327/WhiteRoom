@@ -42,8 +42,16 @@ public class GameManager : MonoBehaviour
 
     public bool LoadProgress()
     {
-        TextAsset tempJson = Resources.Load("playerProgress") as TextAsset;
-        string dataAsJson = tempJson.ToString();
+        string dataAsJson;
+        if (File.Exists(ProgressFilePath))
+        {
+            dataAsJson = File.ReadAllText(ProgressFilePath);
+        }
+        else
+        {
+            TextAsset tempJson = Resources.Load("playerProgress") as TextAsset;
+            dataAsJson = tempJson.ToString();
+        }
         playerProgress = JsonUtility.FromJson<PlayerProgress>(dataAsJson);
         return true;
     }

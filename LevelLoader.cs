@@ -11,6 +11,7 @@ public class LevelLoader : MonoBehaviour
 
     private GameObject restart;
     private GameObject select;
+    private GameObject menu;
 
     void Awake()
     {
@@ -24,6 +25,7 @@ public class LevelLoader : MonoBehaviour
 
         restart = GameObject.Find("Restart");
         select = GameObject.Find("Select");
+        menu = GameObject.Find("Menu");
         SettingOff();
     }
 
@@ -34,10 +36,6 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevel(int sceneIndex)
     {
-        if (sceneIndex == 0)
-            SettingOff();
-        else
-            SettingOn();
         StartCoroutine(LoadAsynchronously(sceneIndex));
     }
 
@@ -48,12 +46,14 @@ public class LevelLoader : MonoBehaviour
 
     public void SettingOn()
     {
+        menu.SetActive(false);
         restart.SetActive(true);
         select.SetActive(true);
     }
 
     public void SettingOff()
     {
+        menu.SetActive(false);
         restart.SetActive(false);
         select.SetActive(false);
     }
@@ -66,10 +66,10 @@ public class LevelLoader : MonoBehaviour
     IEnumerator LoadAsynchronously(int sceneIndex)
     {
         yield return new WaitForSeconds(0.24f);
+        loadingScreen.SetActive(true);
         Color fade = Color.black;
         fade.a = 0f;
 
-        loadingScreen.SetActive(true);
         while (fade.a < 1)
         {
             loadingScreenImg.color = fade;
@@ -79,6 +79,16 @@ public class LevelLoader : MonoBehaviour
 
         fade.a = 1f;
         loadingScreenImg.color = fade;
+
+        if (sceneIndex == 0)
+        {
+            SettingOff();
+        }
+        else
+        {
+            SettingOn();
+        }
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
         while (!operation.isDone)
         {
@@ -100,9 +110,8 @@ public class LevelLoader : MonoBehaviour
 
     IEnumerator TutorialLoadAsynchronously(int sceneIndex)
     {
-        Color fade = Color.black;
-
         loadingScreen.SetActive(true);
+        Color fade = Color.black;
 
         fade.a = 1f;
         loadingScreenImg.color = fade;
@@ -123,5 +132,10 @@ public class LevelLoader : MonoBehaviour
         loadingScreenImg.color = fade;
         loadingScreen.SetActive(false);
         SoundManager.instance.PlayBGM(sceneIndex);
+    }
+
+    public void SetLoadingScreenAlpha(Color c)
+    {
+        loadingScreenImg.color = c;
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Setting : MonoBehaviour
 {
-    private GameObject menu;
+    public GameObject menu;
 
     private bool effect;
     private Image effectImg;
@@ -13,7 +13,6 @@ public class Setting : MonoBehaviour
 
     void Awake()
     {
-        menu = GameObject.Find("Menu");
         effectImg = GameObject.Find("Effect").GetComponent<Image>();
         musicImg = GameObject.Find("Music").GetComponent<Image>();
     }
@@ -24,7 +23,6 @@ public class Setting : MonoBehaviour
         music = true;
         changeSoundColor(effectImg, new Color(0.125f, 0.125f, 0.125f));
         changeSoundColor(musicImg, new Color(0.125f, 0.125f, 0.125f));
-        menu.SetActive(false);
     }
 
     public void MenuOnOff()
@@ -78,13 +76,11 @@ public class Setting : MonoBehaviour
 
     public void Restart()
     {
-        menu.SetActive(false);
         LevelLoader.instance.LoadLevel();
     }
 
     public void GoSelect()
     {
-        menu.SetActive(false);
         LevelLoader.instance.LoadLevel(0);
     }
 }

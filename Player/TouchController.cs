@@ -228,6 +228,7 @@ public class TouchController : MonoBehaviour
 
     private IEnumerator DoubleTabZoom()
     {
+        player.enabled = false;
         howManyTouch = 0;
 
         float startTime = 0f;
@@ -255,5 +256,7 @@ public class TouchController : MonoBehaviour
             Camera.main.fieldOfView = fieldOfViewMin;
         else if (Camera.main.fieldOfView > fieldOfViewMax)
             Camera.main.fieldOfView = fieldOfViewMax;
+
+        player.enabled = true;
     }
 }

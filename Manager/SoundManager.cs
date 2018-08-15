@@ -50,6 +50,13 @@ public class SoundManager : MonoBehaviour
 
     private void PlayMusic(AudioClip clip)
     {
+        //source.PlayOneShot(clip);
+        StartCoroutine(CoPlayMusic(clip));
+    }
+
+    private IEnumerator CoPlayMusic(AudioClip clip)
+    {
+        yield return new WaitForSeconds(0.5f);
         source.PlayOneShot(clip);
     }
 
