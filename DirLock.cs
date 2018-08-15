@@ -36,6 +36,7 @@ public class DirLock : MonoBehaviour
     public void Reset()
     {
         curDir.Clear();
+        door.DoorSound.PlayLockButtonPushSound();
     }
 
     public void MarkButton()
