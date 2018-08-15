@@ -6,16 +6,10 @@ public class Setting : MonoBehaviour
     public GameObject menu;
 
     private bool effect;
-    private Image effectImg;
+    public Image effectImg;
 
     private bool music;
-    private Image musicImg;
-
-    void Awake()
-    {
-        effectImg = GameObject.Find("Effect").GetComponent<Image>();
-        musicImg = GameObject.Find("Music").GetComponent<Image>();
-    }
+    public Image musicImg;
 
     void Start()
     {

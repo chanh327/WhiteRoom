@@ -21,7 +21,7 @@ public class Credits : MonoBehaviour
     {
 		setting.SetActive(false);
 
-		endTime = 51f;
+		endTime = 50f;
 		endPos = rect.sizeDelta.y - 720;
 		upSpeed = 1f;
 

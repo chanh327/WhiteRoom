@@ -33,6 +33,7 @@ public class Locked : MonoBehaviour
     {
         if (CheckConditions())
         {
+            door.DoorSound.PlayUnlockedSound();
             door.State = DoorState.Open;
         }
         else

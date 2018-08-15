@@ -57,8 +57,6 @@ public class Door : MonoBehaviour
         set
         {
             state = value;
-            if (state == DoorState.Open)
-                doorSound.PlayUnlockedSound();
         }
     }
 
