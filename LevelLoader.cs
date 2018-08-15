@@ -9,6 +9,7 @@ public class LevelLoader : MonoBehaviour
     public GameObject loadingScreen;
     private Image loadingScreenImg;
 
+    private GameObject setting;
     private GameObject restart;
     private GameObject select;
     private GameObject menu;
@@ -23,6 +24,7 @@ public class LevelLoader : MonoBehaviour
 
         loadingScreenImg = loadingScreen.GetComponent<Image>();
 
+        setting = GameObject.Find("Setting");
         restart = GameObject.Find("Restart");
         select = GameObject.Find("Select");
         menu = GameObject.Find("Menu");
@@ -87,6 +89,11 @@ public class LevelLoader : MonoBehaviour
         else
         {
             SettingOn();
+        }
+
+        if (!setting.activeSelf)
+        {
+            setting.SetActive(true);
         }
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
