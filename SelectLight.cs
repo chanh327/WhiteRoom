@@ -42,7 +42,7 @@ public class SelectLight : MonoBehaviour
         }
         else
         {
-            for (int i = 1; i < playerProgress.stage_clears.Length - 1; i++)
+            for (int i = 1; i < playerProgress.stage_clears.Length; i++)
             {
                 if (playerProgress.stage_clears[i])
                     PointLights[i - 1].SetActive(false);

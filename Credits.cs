@@ -4,49 +4,74 @@ using System.Collections;
 
 public class Credits : MonoBehaviour
 {
-	float endTime;
-	float endPos;
-	float upSpeed;
+    float endTime;
+    float endPos;
+    float upSpeed;
     RectTransform rect;
 
-	private GameObject setting;
+    private GameObject setting;
+    private GameObject skip;
 
     void Awake()
     {
         rect = GetComponent<RectTransform>();
-		setting = GameObject.Find("Setting");
+        setting = GameObject.Find("Setting");
+        skip = GameObject.Find("Skip");
     }
 
     void Start()
     {
-		setting.SetActive(false);
+        setting.SetActive(false);
 
-		endTime = 50f;
-		endPos = rect.sizeDelta.y - 720;
-		upSpeed = 1f;
+        endTime = 50f;
+        endPos = rect.sizeDelta.y - 720;
+        upSpeed = 0.95f;
 
         StartCoroutine(UpCredits());
     }
 
+    void LateUpdate()
+    {
+#if UNITY_EDITOR
+        if (Input.GetMouseButton(0))
+        {
+            upSpeed = 5;
+        }
+        else
+        {
+            upSpeed = 0.95f;
+        }
+#elif UNITY_ANDROID
+        if (Input.touchCount > 0)
+        {
+            upSpeed = 5;
+        }
+        else
+        {
+            upSpeed = 1f;
+        }
+#endif
+    }
+
     private IEnumerator UpCredits()
     {
-		float upTemp = 0;
+        float upTemp = 0;
         float time = 0;
-        while (time < endTime)
+        while (rect.localPosition.y < endPos)
         {
-			time += Time.deltaTime;
+            time += Time.deltaTime;
             upTemp += upSpeed;
-			if(rect.localPosition.y < endPos)
-				rect.localPosition = Vector2.Lerp(rect.localPosition, new Vector2(0, upTemp), time);
+
+            rect.localPosition = Vector2.Lerp(rect.localPosition, new Vector2(0, upTemp), time);
 
             yield return null;
         }
 
-		LevelLoader.instance.LoadLevel(0);
+        LevelLoader.instance.LoadLevel(0);
     }
 
-	public void Skip()
-	{
-		LevelLoader.instance.LoadLevel(0);
-	}
+    public void Skip()
+    {
+        LevelLoader.instance.LoadLevel(0);
+    }
 }

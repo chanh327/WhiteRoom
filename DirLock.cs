@@ -109,6 +109,7 @@ public class DirLock : MonoBehaviour
 
     public void CloseDirLock()
     {
+        curDir.Clear();
         touchController.enabled = true;
         this.gameObject.SetActive(false);
     }
