@@ -26,7 +26,7 @@ public class SelectLight : MonoBehaviour
             PointLights[i].SetActive(true);
         PointLights[PointLights.Length - 1].SetActive(false);
 
-        if (playerProgress.watchEnding == true)
+        if (playerProgress.stage_clears[6] == true)
         {
             PointLights[PointLights.Length - 1].SetActive(true);
             endingDoor.State = DoorState.Open;
