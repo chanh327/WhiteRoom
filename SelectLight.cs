@@ -12,16 +12,6 @@ public class SelectLight : MonoBehaviour
         PlayerProgress playerProgress = GameManager.instance.playerProgress;
         endingDoor.State = DoorState.Locked;
 
-        //Tutorial
-        if (playerProgress.stage_clears[0] == false)
-        {
-            LevelLoader.instance.StartLoad(0);
-        }
-        else
-        {
-            LevelLoader.instance.SetLoadingScreenAlpha(new Color(0, 0, 0, 0));
-        }
-
         for (int i = 0; i < PointLights.Length - 1; i++)
             PointLights[i].SetActive(true);
         PointLights[PointLights.Length - 1].SetActive(false);
