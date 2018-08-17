@@ -75,6 +75,6 @@ public class Setting : MonoBehaviour
 
     public void GoSelect()
     {
-        LevelLoader.instance.LoadLevel(0);
+        LevelLoader.instance.LoadLevel(1);
     }
 }

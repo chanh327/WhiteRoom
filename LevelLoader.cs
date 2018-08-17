@@ -9,10 +9,10 @@ public class LevelLoader : MonoBehaviour
     public GameObject loadingScreen;
     private Image loadingScreenImg;
 
-    private GameObject setting;
-    private GameObject restart;
-    private GameObject select;
-    private GameObject menu;
+    public GameObject setting;
+    public GameObject restart;
+    public GameObject select;
+    public GameObject menu;
 
     void Awake()
     {
@@ -23,17 +23,11 @@ public class LevelLoader : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         loadingScreenImg = loadingScreen.GetComponent<Image>();
-
-        setting = GameObject.Find("Setting");
-        restart = GameObject.Find("Restart");
-        select = GameObject.Find("Select");
-        menu = GameObject.Find("Menu");
-        SettingOff();
     }
 
     void Start()
     {
-        //loadingScreen.SetActive(false);
+        SettingOff();
     }
 
     public void LoadLevel(int sceneIndex)
@@ -86,7 +80,7 @@ public class LevelLoader : MonoBehaviour
         loadingScreenImg.color = fade;
         SoundManager.instance.source.volume = 0;
 
-        if (sceneIndex == 0)
+        if (sceneIndex == 1 || sceneIndex == 2)
         {
             SettingOff();
         }
@@ -138,7 +132,7 @@ public class LevelLoader : MonoBehaviour
         {
             yield return null;
         }
-        
+
         SoundManager.instance.PlayBGM(sceneIndex);
 
         while (fade.a > 0)

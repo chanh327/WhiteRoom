@@ -29,12 +29,6 @@ public class GameManager : MonoBehaviour
         LoadProgress();
     }
 
-    void Start()
-    {
-        //playerProgress.Reset();
-        //SaveProgress(1);
-    }
-
     public void QuitGame()
     {
         Application.Quit();
@@ -58,7 +52,7 @@ public class GameManager : MonoBehaviour
 
     public void SaveProgress(int sceneidx)
     {
-        playerProgress.Finish(sceneidx - 1);
+        playerProgress.Finish(sceneidx);
         string dataAsJson = JsonUtility.ToJson(playerProgress, true);
         File.WriteAllText(ProgressFilePath, dataAsJson);
     }

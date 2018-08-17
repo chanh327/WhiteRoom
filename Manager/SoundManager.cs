@@ -55,7 +55,7 @@ public class SoundManager : MonoBehaviour
 
     private IEnumerator CoPlayMusic(AudioClip clip)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2.5f);
         source.clip = clip;
         source.Play();
     }
