@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Credits : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class Credits : MonoBehaviour
         }
         else
         {
-            upSpeed = 1f;
+            upSpeed = 0.95f;
         }
 #endif
     }
@@ -66,7 +67,7 @@ public class Credits : MonoBehaviour
 
             yield return null;
         }
-
+        GameManager.instance.SaveProgress(SceneManager.GetActiveScene().buildIndex);
         LevelLoader.instance.LoadLevel(0);
     }
 

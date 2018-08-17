@@ -3,9 +3,7 @@ using System.Collections;
 
 public class PlayerProgress
 {
-    public bool[] stage_clears = new bool[6];
-    public bool watchEnding;
-
+    public bool[] stage_clears = new bool[7];
     public void Reset()
     {
         stage_clears = new bool[6];
@@ -21,7 +19,7 @@ public class PlayerProgress
         get
         {
             bool clear = true;
-            for (int i = 0; i < stage_clears.Length; i++)
+            for (int i = 0; i < 6; i++)
             {
                 if (stage_clears[i] == false)
                 {

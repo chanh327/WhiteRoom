@@ -33,7 +33,7 @@ public class LevelLoader : MonoBehaviour
 
     void Start()
     {
-        loadingScreen.SetActive(false);
+        //loadingScreen.SetActive(false);
     }
 
     public void LoadLevel(int sceneIndex)
@@ -41,9 +41,9 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(LoadAsynchronously(sceneIndex));
     }
 
-    public void TutorialLoad()
+    public void StartLoad(int sceneIndex)
     {
-        StartCoroutine(TutorialLoadAsynchronously(1));
+        StartCoroutine(StartLoadAsynchronously(sceneIndex));
     }
 
     public void SettingOn()
@@ -115,7 +115,7 @@ public class LevelLoader : MonoBehaviour
         SoundManager.instance.PlayBGM(sceneIndex);
     }
 
-    IEnumerator TutorialLoadAsynchronously(int sceneIndex)
+    IEnumerator StartLoadAsynchronously(int sceneIndex)
     {
         loadingScreen.SetActive(true);
         Color fade = Color.black;

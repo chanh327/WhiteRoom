@@ -217,6 +217,14 @@ public class TouchController : MonoBehaviour
 
         xAngle = -angleTemp.y;
         yAngle = angleTemp.x;
+        
+        if (Input.touchCount > 0)
+        {
+            firstPoint = Input.GetTouch(0).position;
+            secondPoint = Input.GetTouch(0).position;
+            xAngleTemp = xAngle;
+            yAngleTemp = yAngle;
+        }
     }
 
     private IEnumerator IntervalBetweenTouch()
