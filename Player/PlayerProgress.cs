@@ -11,7 +11,7 @@ public class PlayerProgress
 
     public void Finish(int sceneidx)
     {
-        stage_clears[sceneidx] = true;
+        stage_clears[sceneidx-2] = true;
     }
 
     public bool IsAllClear
