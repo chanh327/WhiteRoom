@@ -76,11 +76,15 @@ public class LevelLoader : MonoBehaviour
         {
             loadingScreenImg.color = fade;
             fade.a += 0.04f;
+
+            if (SoundManager.instance.source.volume > 0)
+                SoundManager.instance.source.volume -= 0.04f;
             yield return null;
         }
 
         fade.a = 1f;
         loadingScreenImg.color = fade;
+        SoundManager.instance.source.volume = 0;
 
         if (sceneIndex == 0)
         {
@@ -102,17 +106,24 @@ public class LevelLoader : MonoBehaviour
             yield return null;
         }
 
+        SoundManager.instance.PlayBGM(sceneIndex);
+
         while (fade.a > 0)
         {
             loadingScreenImg.color = fade;
-            fade.a -= 0.03f;
+            fade.a -= 0.04f;
+
+            if (SoundManager.instance.source.volume < 1)
+                SoundManager.instance.source.volume += 0.04f;
+
             yield return null;
         }
 
         fade.a = 0f;
         loadingScreenImg.color = fade;
+        SoundManager.instance.source.volume = 1f;
+
         loadingScreen.SetActive(false);
-        SoundManager.instance.PlayBGM(sceneIndex);
     }
 
     IEnumerator StartLoadAsynchronously(int sceneIndex)
@@ -127,18 +138,19 @@ public class LevelLoader : MonoBehaviour
         {
             yield return null;
         }
+        
+        SoundManager.instance.PlayBGM(sceneIndex);
 
         while (fade.a > 0)
         {
             loadingScreenImg.color = fade;
-            fade.a -= 0.03f;
+            fade.a -= 0.04f;
             yield return null;
         }
 
         fade.a = 0f;
         loadingScreenImg.color = fade;
         loadingScreen.SetActive(false);
-        SoundManager.instance.PlayBGM(sceneIndex);
     }
 
     public void SetLoadingScreenAlpha(Color c)

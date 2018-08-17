@@ -26,7 +26,7 @@ public class Credits : MonoBehaviour
 
         endTime = 50f;
         endPos = rect.sizeDelta.y - 720;
-        upSpeed = 0.95f;
+        upSpeed = 1;
 
         StartCoroutine(UpCredits());
     }
@@ -40,7 +40,7 @@ public class Credits : MonoBehaviour
         }
         else
         {
-            upSpeed = 0.95f;
+            upSpeed = 1f;
         }
 #elif UNITY_ANDROID
         if (Input.touchCount > 0)
@@ -49,7 +49,7 @@ public class Credits : MonoBehaviour
         }
         else
         {
-            upSpeed = 0.95f;
+            upSpeed = 1f;
         }
 #endif
     }
