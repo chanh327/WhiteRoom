@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
         LoadProgress();
+
+        Application.targetFrameRate = 50;
     }
 
     public void QuitGame()
