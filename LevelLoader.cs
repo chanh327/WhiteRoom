@@ -14,6 +14,8 @@ public class LevelLoader : MonoBehaviour
     public GameObject select;
     public GameObject menu;
 
+    private bool ing;
+
     void Awake()
     {
         if (instance == null)
@@ -27,12 +29,14 @@ public class LevelLoader : MonoBehaviour
 
     void Start()
     {
+        ing = false;
         SettingOff();
     }
 
     public void LoadLevel(int sceneIndex)
     {
-        StartCoroutine(LoadAsynchronously(sceneIndex));
+        if (!ing)
+            StartCoroutine(LoadAsynchronously(sceneIndex));
     }
 
     public void StartLoad(int sceneIndex)
@@ -56,11 +60,13 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevel()
     {
-        StartCoroutine(LoadAsynchronously(SceneManager.GetActiveScene().buildIndex));
+        if (!ing)
+            StartCoroutine(LoadAsynchronously(SceneManager.GetActiveScene().buildIndex));
     }
 
     IEnumerator LoadAsynchronously(int sceneIndex)
     {
+        ing = true;
         yield return new WaitForSeconds(0.24f);
         loadingScreen.SetActive(true);
         Color fade = Color.black;
@@ -118,12 +124,13 @@ public class LevelLoader : MonoBehaviour
         SoundManager.instance.source.volume = 1f;
 
         loadingScreen.SetActive(false);
+        ing = false;
     }
 
     IEnumerator StartLoadAsynchronously(int sceneIndex)
     {
         loadingScreen.SetActive(true);
-        Color fade = Color.black;
+        Color fade = new Color32(35, 31, 32, 255);
 
         fade.a = 1f;
         loadingScreenImg.color = fade;

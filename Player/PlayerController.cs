@@ -48,10 +48,10 @@ public class PlayerController : MonoBehaviour
             goalAngle.y += 360;
         startAngle.z = 0f;
 
-        float prevFieldOfView = Camera.main.fieldOfView;
         float startTime = 0f;
 
         yield return new WaitForSeconds(0.5f);
+        float prevFieldOfView = Camera.main.fieldOfView;
 
         while (startTime < 1f)
         {
